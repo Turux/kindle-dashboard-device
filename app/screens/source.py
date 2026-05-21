@@ -6,6 +6,7 @@ from app.state import SCREEN_HOME
 class SourceScreen:
     def __init__(self, state):
         self.state = state
+        self.full_render_needed = True
 
     def render(self):
         pass  # TODO
