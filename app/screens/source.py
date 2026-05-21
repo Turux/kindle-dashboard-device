@@ -10,6 +10,9 @@ class SourceScreen:
     def render(self):
         pass  # TODO
 
+    def partial_render(self):
+        self.render()
+
     def handle_input(self):
         key = wait_for_key()
         if key == KEY_BACK:

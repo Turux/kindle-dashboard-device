@@ -28,6 +28,17 @@ class HomeScreen:
         fb.hline(STOCK_BAR_Y + STOCK_BAR_H)
         self._draw_headlines()
 
+    def partial_render(self):
+        """Only redraw the headlines zone — used on UP/DOWN navigation"""
+        fb.cls_region(
+            top=HEADLINES_Y,
+            left=0,
+            width=SCREEN_W,
+            height=HEADLINES_H
+        )
+        fb.hline(HEADLINES_Y)
+        self._draw_headlines()
+
     # ── sections ──────────────────────────────────
 
     def _draw_date_bar(self):
