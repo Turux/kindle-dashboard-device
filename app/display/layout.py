@@ -11,6 +11,7 @@ DATE_BAR_H      = 60
 WIDGET_ROW_Y    = 60
 WIDGET_ROW_H    = 180
 WIDGET_W        = 200   # 600 / 3
+WIDGET_PADDING = 8   # inner padding for all widgets
 
 STOCK_BAR_Y     = 240
 STOCK_BAR_H     = 80
