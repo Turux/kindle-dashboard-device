@@ -32,84 +32,99 @@ class HomeScreen:
     def _draw_date_bar(self):
         now = datetime.now()
         date_str = now.strftime("%A  %d %B %Y")
-        # vertically centre in DATE_BAR_H=60 at size 2
-        fb.text(date_str, y=DATE_BAR_Y + 18, size=2, centered=True)
+        fb.ui_text(date_str, top=15, left=10, right=10,
+                   size=16, bold=True, centered=True)
 
     def _draw_widgets(self):
-        # vertical dividers between widgets
         fb.vline(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
         fb.vline(WIDGET_W * 2, WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
-
         self._draw_weather()
         self._draw_f1()
         self._draw_sailgp()
 
     def _draw_weather(self):
-        d = self.state.data.get("weather", {})
-        x = COL_WEATHER + WIDGET_PADDING
-        y = WIDGET_ROW_Y + WIDGET_PADDING
+        d     = self.state.data.get("weather", {})
+        left  = COL_WEATHER + 10
+        right = SCREEN_W - WIDGET_W + 10   # clamp text to weather column
 
-        fb.text("London",              x=x, y=y,      size=1)
-        fb.text(d.get("temp", "--°"), x=x, y=y + 40,  size=3)
-        fb.text(d.get("desc", "---"), x=x, y=y + 100, size=1)
-        fb.text(d.get("rain", ""),    x=x, y=y + 125, size=1)
+        fb.ui_text("London",
+                   top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text(d.get("temp", "--°"),
+                   top=WIDGET_ROW_Y + 35, left=left, right=right, size=28)
+        fb.ui_text(d.get("desc", "---"),
+                   top=WIDGET_ROW_Y + 110, left=left, right=right, size=11)
+        fb.ui_text(d.get("rain", ""),
+                   top=WIDGET_ROW_Y + 135, left=left, right=right, size=11)
 
     def _draw_f1(self):
-        d = self.state.data.get("f1", {})
-        x = COL_F1 + WIDGET_PADDING
-        y = WIDGET_ROW_Y + WIDGET_PADDING
+        d     = self.state.data.get("f1", {})
+        left  = COL_F1 + 10
+        right = SCREEN_W - WIDGET_W - COL_F1 + 10
 
-        fb.text("Next Race",            x=x, y=y,       size=1)
-        fb.text(d.get("name",  "---"), x=x, y=y + 35,  size=1)
-        fb.text(d.get("date",  "---"), x=x, y=y + 70,  size=1)
-        fb.text(d.get("time",  "---"), x=x, y=y + 100, size=2)
+        fb.ui_text("Next Race",
+                   top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text(fb.truncate(d.get("name", "---"), 16),
+                   top=WIDGET_ROW_Y + 35, left=left, right=right, size=14)
+        fb.ui_text(d.get("date", "---"),
+                   top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
+        fb.ui_text(d.get("time", "---"),
+                   top=WIDGET_ROW_Y + 100, left=left, right=right, size=22)
 
     def _draw_sailgp(self):
-        d = self.state.data.get("sailgp", {})
-        x = COL_SAILGP + WIDGET_PADDING
-        y = WIDGET_ROW_Y + WIDGET_PADDING
+        d     = self.state.data.get("sailgp", {})
+        left  = COL_SAILGP + 10
+        right = 10
 
-        fb.text("SailGP",               x=x, y=y,       size=1)
-        fb.text(d.get("event", "---"), x=x, y=y + 35,  size=1)
-        fb.text(d.get("dates", "---"), x=x, y=y + 70,  size=1)
-        fb.text(d.get("round", "---"), x=x, y=y + 105, size=1)
+        fb.ui_text("SailGP",
+                   top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text(fb.truncate(d.get("event", "---"), 16),
+                   top=WIDGET_ROW_Y + 35, left=left, right=right, size=13)
+        fb.ui_text(d.get("dates", "---"),
+                   top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
+        fb.ui_text(d.get("round", "---"),
+                   top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_stocks(self):
         stocks = self.state.data.get("stocks", [])
         if not stocks:
-            fb.text("---", x=WIDGET_PADDING, 
-                    y=STOCK_BAR_Y + 25, size=1)
             return
-
-        # spread tickers evenly across 600px
         slot_w = SCREEN_W // len(stocks)
         for i, s in enumerate(stocks):
             arrow = "▲" if s.get("change", 0) >= 0 else "▼"
             label = f"{s['ticker']}  {s['price']}  {arrow}{s['pct']}%"
-            fb.text(label,
-                    x=i * slot_w + WIDGET_PADDING,
-                    y=STOCK_BAR_Y + 25,
-                    size=1)
+            left  = i * slot_w + 10
+            right = SCREEN_W - (i + 1) * slot_w + 10
+            fb.ui_text(label,
+                       top=STOCK_BAR_Y + 22,
+                       left=left, right=right, size=11)
 
     def _draw_headlines(self):
         headlines = self.state.data.get("headlines", [])
         selected  = self.state.selected_index
 
         for i in range(min(4, len(headlines))):
-            h   = headlines[i]
-            y   = HEADLINES_Y + (i * HEADLINE_ITEM_H)
+            h           = headlines[i]
+            y           = HEADLINES_Y + (i * HEADLINE_ITEM_H)
             is_selected = (i == selected)
 
-            # source label
-            fb.text(h.get("source", ""),
-                    x=WIDGET_PADDING, y=y + 8, size=1)
+            # source label — small, grey feel via size 10
+            fb.ui_text(h.get("source", ""),
+                       top=y + 8, left=WIDGET_PADDING,
+                       right=10, size=10)
 
-            # headline text — inverted if selected
-            fb.text(h.get("title", ""),
-                    x=WIDGET_PADDING, y=y + 30,
-                    size=2, inverted=is_selected)
+            # headline text — inverted bar if selected
+            title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
+            if is_selected:
+                fb.filled_rect(y + 28, 0, SCREEN_W, 48)
+                fb.ui_text(title,
+                           top=y + 30, left=WIDGET_PADDING,
+                           right=10, size=13, inverted=True)
+            else:
+                fb.ui_text(title,
+                           top=y + 30, left=WIDGET_PADDING,
+                           right=10, size=13)
 
-            # divider between items (not after last)
+            # divider between items, not after last
             if i < 3:
                 fb.hline(y + HEADLINE_ITEM_H)
 
@@ -122,7 +137,7 @@ class HomeScreen:
         key = wait_for_key()
 
         if key == KEY_UP:
-            self.state.selected_index = max(0, 
+            self.state.selected_index = max(0,
                 self.state.selected_index - 1)
 
         elif key == KEY_DOWN:
@@ -137,7 +152,6 @@ class HomeScreen:
             self.state.screen       = SCREEN_ARTICLE
 
         elif is_page_forward(key) or is_page_backward(key):
-            # flip to source view
             self.state.source_index   = 0
             self.state.selected_index = 0
             self.state.prev_screen    = SCREEN_HOME

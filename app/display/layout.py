@@ -35,6 +35,9 @@ SOURCE_ITEM_H   = 125   # 6 items × 125 = 750px
 SIZE_SMALL  = "1"
 SIZE_MEDIUM = "2"
 SIZE_LARGE  = "3"
+CHARS_SIZE_11 = 58   # small UI text
+CHARS_SIZE_13 = 48   # headline text  
+CHARS_SIZE_14 = 44   # medium UI text
 
 # ── divider ───────────────────────────────────────
 DIVIDER_CHAR = "─"

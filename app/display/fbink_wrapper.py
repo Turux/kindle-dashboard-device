@@ -6,60 +6,94 @@ import os
 FBINK_BIN = "/mnt/us/fbink/bin/fbink"
 FBINK_LIB = "/mnt/us/fbink/lib"
 
+# fonts
+FONT_UI_REGULAR = "/usr/java/lib/fonts/Helvetica_LT_65_Medium.ttf"
+FONT_UI_BOLD    = "/usr/java/lib/fonts/Helvetica_LT_75_Bold.ttf"
+FONT_READ_REG   = "/usr/java/lib/fonts/Caecilia_LT_65_Medium.ttf"
+FONT_READ_BOLD  = "/usr/java/lib/fonts/Caecilia_LT_75_Bold.ttf"
+
 env = os.environ.copy()
 env["LD_LIBRARY_PATH"] = FBINK_LIB
 
 def _run(args):
     cmd = [FBINK_BIN] + args
-    subprocess.run(cmd, env=env, stdout=subprocess.DEVNULL, 
+    subprocess.run(cmd, env=env,
+                   stdout=subprocess.DEVNULL,
                    stderr=subprocess.DEVNULL)
 
 def clear():
-    """Clear the screen to white"""
-    _run(["-c", "-f"])
+    _run(["-k"])
 
-def text(string, x=0, y=0, size=1, inverted=False, centered=False):
-    """
-    Draw text at pixel position (x, y)
-    size: 1=small 2=medium 3=large
-    inverted: white text on black background
-    centered: ignore x, centre horizontally
-    """
-    args = ["-S", str(size)]
+def cls_region(top, left, width, height):
+    """Clear a rectangular region"""
+    _run(["-k", f"top={top},left={left},width={width},height={height}"])
+
+def ui_text(string, top, left=10, right=10, size=12,
+            bold=False, inverted=False, centered=False):
+    """Helvetica — for all dashboard UI elements"""
+    regular = FONT_UI_REGULAR
+    bold_f  = FONT_UI_BOLD
+    font_str = (f"regular={regular},bold={bold_f},"
+                f"size={size},top={top},left={left},right={right}")
+    args = ["-t", font_str]
     if inverted:
         args += ["-h"]
     if centered:
         args += ["-m"]
-    else:
-        # use pixel offsets, not character grid
-        args += ["-x", "0", "-y", "0",
-                 "-X", str(x), "-Y", str(y)]
+    if bold:
+        args += []   # use **text** markdown, or pass style=BOLD
+        font_str = (f"regular={regular},bold={bold_f},"
+                    f"size={size},top={top},left={left},"
+                    f"right={right},style=BOLD")
+        args = ["-t", font_str]
+        if inverted:
+            args += ["-h"]
+        if centered:
+            args += ["-m"]
     args += ["--", string]
     _run(args)
 
-def hline(y, x_start=0, x_end=600):
-    """Draw a horizontal rule"""
-    # fbink can draw rectangles - a 1px tall rectangle is a line
-    args = [
-        "-x", str(x_start),
-        "-y", str(y),
-        "--size-w", str(x_end - x_start),
-        "--size-h", "1",
-        "-B", "BLACK"
-    ]
+def truncate(text, max_chars, ellipsis="..."):
+    """Truncate string to max_chars, adding ellipsis if needed"""
+    if len(text) <= max_chars:
+        return text
+    return text[:max_chars - len(ellipsis)] + ellipsis
+
+def read_text(string, top, left=10, right=10, size=16,
+              bold=False, inverted=False):
+    """Caecilia — for article reading"""
+    regular = FONT_READ_REG
+    bold_f  = FONT_READ_BOLD
+    style   = "BOLD" if bold else "REGULAR"
+    font_str = (f"regular={regular},bold={bold_f},"
+                f"size={size},top={top},left={left},"
+                f"right={right},style={style}")
+    args = ["-t", font_str, "--", string]
+    if inverted:
+        args = ["-h"] + args
     _run(args)
+
+def hline(y, x_start=0, x_end=600):
+    """1px horizontal rule"""
+    _run(["-k",
+          f"top={y},left={x_start},"
+          f"width={x_end - x_start},height=1"])
+    _run(["-s",
+          f"top={y},left={x_start},"
+          f"width={x_end - x_start},height=1"])
 
 def vline(x, y_start=0, y_end=800):
-    """Draw a vertical rule"""
-    args = [
-        "-x", str(x),
-        "-y", str(y_start),
-        "--size-w", "1",
-        "--size-h", str(y_end - y_start),
-        "-B", "BLACK"
-    ]
-    _run(args)
+    """1px vertical rule"""
+    _run(["-k",
+          f"top={y_start},left={x},"
+          f"width=1,height={y_end - y_start}"])
+    _run(["-s",
+          f"top={y_start},left={x},"
+          f"width=1,height={y_end - y_start}"])
 
-def refresh():
-    """Force a full screen refresh to clear ghosting"""
-    _run(["-f", "-m", "--", " "])
+def filled_rect(top, left, width, height, color="BLACK"):
+    """Filled rectangle — useful for inverted headers"""
+    _run(["-k",
+          f"top={top},left={left},"
+          f"width={width},height={height}",
+          "-B", color])
