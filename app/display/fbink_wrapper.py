@@ -31,7 +31,9 @@ def text(string, x=0, y=0, size=1, inverted=False, centered=False):
     if centered:
         args += ["-m"]
     else:
-        args += ["-x", str(x), "-y", str(y)]
+        # use pixel offsets, not character grid
+        args += ["-x", "0", "-y", "0",
+                 "-X", str(x), "-Y", str(y)]
     args += ["--", string]
     _run(args)
 
