@@ -4,9 +4,10 @@ from app.display import fbink_wrapper as fb
 from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_UP, KEY_DOWN, KEY_SELECT,
-                             KEY_BACK, KEY_HOME,
+                             KEY_BACK, KEY_HOME, KEY_MENU,
                              is_page_forward, is_page_backward)
-from app.state import SCREEN_SOURCE, SCREEN_ARTICLE
+from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
+from app.data.cache import sync_if_online, load_home, is_wifi_on
 from datetime import datetime
 
 
@@ -178,6 +179,23 @@ class HomeScreen:
             self.state.prev_screen  = SCREEN_HOME
             self.state.screen       = SCREEN_ARTICLE
             self.full_render_needed = True    # new screen, full render
+
+        elif key == KEY_MENU:
+            if is_wifi_on():
+                # show syncing message in top right
+                fb.cls_region(top=0, left=480, width=120, height=60)
+                fb.ui_text("Syncing...", top=18, left=480, right=10, size=10)
+                synced = sync_if_online()
+                if synced:
+                    self.state.data = load_home()
+                self.full_render_needed = True
+            else:
+                # flash a "No WiFi" message briefly then restore
+                fb.cls_region(top=0, left=460, width=140, height=60)
+                fb.ui_text("No WiFi", top=18, left=460, right=10, size=10)
+                import time
+                time.sleep(2)
+                self.full_render_needed = True
 
         elif is_page_forward(key) or is_page_backward(key):
             self.state.source_index   = 0

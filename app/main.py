@@ -5,25 +5,27 @@ import os
 sys.path.insert(0, "/mnt/us/dashboard")
 
 from app.input.dpad import start as start_input
-from app.display.fbink_wrapper import clear
+from app.display import fbink_wrapper as fb
 from app.state import AppState, SCREEN_HOME, SCREEN_SOURCE, SCREEN_ARTICLE
 from app.screens.home import HomeScreen
 from app.screens.source import SourceScreen
 from app.screens.article import ArticleScreen
-from app.data.cache import load_cache
+from app.data.cache import sync_if_online, load_home
 
 def main():
     start_input()
     state = AppState()
-    state.data = load_cache()
+
+    fb.clear()
+    fb.ui_text("Loading...", top=380, size=14, centered=True)
+    sync_if_online()          # tries wifi, silently skips if offline
+    state.data = load_home()  # falls back to dummy data if no cache yet
 
     screens = {
         SCREEN_HOME:    HomeScreen(state),
         SCREEN_SOURCE:  SourceScreen(state),
         SCREEN_ARTICLE: ArticleScreen(state),
     }
-
-    clear()
 
     while True:
         current = screens[state.screen]
