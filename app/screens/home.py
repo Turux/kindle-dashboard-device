@@ -14,6 +14,7 @@ class HomeScreen:
 
     def __init__(self, state):
         self.state = state
+        self.full_render_needed = True
 
     # ── main render ───────────────────────────────
 
@@ -90,7 +91,7 @@ class HomeScreen:
             return
         slot_w = SCREEN_W // len(stocks)
         for i, s in enumerate(stocks):
-            arrow = "▲" if s.get("change", 0) >= 0 else "▼"
+            arrow = "+" if s.get("change", 0) >= 0 else "-"
             label = f"{s['ticker']}  {s['price']}  {arrow}{s['pct']}%"
             left  = i * slot_w + 10
             right = SCREEN_W - (i + 1) * slot_w + 10
@@ -127,6 +128,19 @@ class HomeScreen:
             # divider between items, not after last
             if i < 3:
                 fb.hline(y + HEADLINE_ITEM_H)
+    
+    def _redraw_headlines_only(self):
+        # clear just the headlines zone
+        fb.cls_region(
+            top=HEADLINES_Y, 
+            left=0, 
+            width=SCREEN_W, 
+            height=HEADLINES_H
+        )
+        # redraw the top border
+        fb.hline(HEADLINES_Y)
+        # redraw just the headlines
+        self._draw_headlines()
 
     # ── input ─────────────────────────────────────
 
@@ -139,10 +153,12 @@ class HomeScreen:
         if key == KEY_UP:
             self.state.selected_index = max(0,
                 self.state.selected_index - 1)
+            self.full_render_needed = False   # partial only
 
         elif key == KEY_DOWN:
             self.state.selected_index = min(max_idx,
                 self.state.selected_index + 1)
+            self.full_render_needed = False   # partial only
 
         elif key == KEY_SELECT:
             h = headlines[self.state.selected_index]
@@ -150,9 +166,11 @@ class HomeScreen:
             self.state.article_page = 0
             self.state.prev_screen  = SCREEN_HOME
             self.state.screen       = SCREEN_ARTICLE
+            self.full_render_needed = True    # new screen, full render
 
         elif is_page_forward(key) or is_page_backward(key):
             self.state.source_index   = 0
             self.state.selected_index = 0
             self.state.prev_screen    = SCREEN_HOME
             self.state.screen         = SCREEN_SOURCE
+            self.full_render_needed = True    # new screen, full render

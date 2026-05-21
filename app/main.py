@@ -27,7 +27,11 @@ def main():
 
     while True:
         current = screens[state.screen]
-        current.render()
+        if current.full_render_needed:
+            current.render()
+            current.full_render_needed = False
+        else: 
+            current.partial_render()
         current.handle_input()
 
 if __name__ == "__main__":
