@@ -50,6 +50,9 @@ def _write_cache(payload):
     # metadata — when we last synced
     with open(META_FILE, "w") as f:
         json.dump({"synced_at": time.time()}, f)
+        
+    # clean after yourself
+    cleanup_cache()
 
 def load_home():
     if not os.path.exists(HOME_CACHE):
@@ -94,6 +97,28 @@ def cache_age_mins():
     with open(META_FILE) as f:
         meta = json.load(f)
     return (time.time() - meta.get("synced_at", 0)) / 60
+
+def cleanup_cache():
+    """Keep articles directory from growing unbounded"""
+    if not os.path.exists(f"{CACHE_DIR}/articles"):
+        return
+
+    files = [
+        (f, os.path.getmtime(f"{CACHE_DIR}/articles/{f}"))
+        for f in os.listdir(f"{CACHE_DIR}/articles")
+        if f.endswith(".txt")
+    ]
+
+    # sort newest first
+    files.sort(key=lambda x: x[1], reverse=True)
+
+    # keep max 30, delete anything older than 3 days
+    now = time.time()
+    for i, (fname, mtime) in enumerate(files):
+        path = f"{CACHE_DIR}/articles/{fname}"
+        age_days = (now - mtime) / 86400
+        if i >= 30 or age_days > 3:
+            os.remove(path)
 
 def load_cache():
     return {
