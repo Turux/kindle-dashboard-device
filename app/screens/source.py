@@ -29,11 +29,13 @@ class SourceScreen:
 
     def partial_render(self):
         """Only redraw headlines — used on UP/DOWN"""
+        # flash=True forces a clean e-ink refresh, clears ghosting
         fb.cls_region(
             top=SOURCE_BAR_H + 1,
             left=0,
             width=SCREEN_W,
-            height=SCREEN_H - SOURCE_BAR_H
+            height=SCREEN_H - SOURCE_BAR_H,
+            flash=True          # <-- add this
         )
         self._draw_headlines()
 
@@ -78,25 +80,27 @@ class SourceScreen:
 
             # date — small, top of item
             date_str = h.get("date", "")
+            # date
             if date_str:
                 fb.ui_text(date_str,
-                           top=y + 6,
-                           left=10, right=10, size=10)
+                        top=y + 6,
+                        left=10, right=10, size=10)
 
             # headline title
             title = fb.truncate(h.get("title", ""), 52)
-            title_top = y + 24 if date_str else y + 10
+            # more breathing room between date and title
+            title_top = y + 30 if date_str else y + 10
 
             if is_selected:
-                fb.filled_rect(title_top - 2, 0, SCREEN_W, 36)
+                fb.filled_rect(title_top - 4, 0, SCREEN_W, 38)
                 fb.ui_text(title,
-                           top=title_top,
-                           left=10, right=10,
-                           size=13, inverted=True)
+                        top=title_top,
+                        left=10, right=10,
+                        size=13, inverted=True)
             else:
                 fb.ui_text(title,
-                           top=title_top,
-                           left=10, right=10, size=13)
+                        top=title_top,
+                        left=10, right=10, size=13)
 
             # summary — lighter, smaller, below title
             summary = h.get("summary", "")

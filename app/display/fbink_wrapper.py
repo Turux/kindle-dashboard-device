@@ -24,9 +24,11 @@ def _run(args):
 def clear():
     _run(["-k"])
 
-def cls_region(top, left, width, height):
-    """Clear a rectangular region"""
-    _run(["-k", f"top={top},left={left},width={width},height={height}"])
+def cls_region(top, left, width, height, flash=False):
+    args = ["-k", f"top={top},left={left},width={width},height={height}"]
+    if flash:
+        args += ["-f"]
+    _run(args)
 
 def ui_text(string, top, left=10, right=10, size=12,
             bold=False, inverted=False, centered=False):
