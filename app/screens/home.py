@@ -116,15 +116,39 @@ class HomeScreen:
         stocks = self.state.data.get("stocks", [])
         if not stocks:
             return
-        slot_w = SCREEN_W // len(stocks)
+
+        slot_w  = SCREEN_W // len(stocks)
+        padding = 8
+
         for i, s in enumerate(stocks):
-            arrow = "+" if s.get("change", 0) >= 0 else "-"
-            label = f"{s['ticker']}  {s['price']}  {arrow}{s['pct']}%"
-            left  = i * slot_w + 10
-            right = SCREEN_W - (i + 1) * slot_w + 10
-            fb.ui_text(label,
-                       top=STOCK_BAR_Y + 22,
-                       left=left, right=right, size=11)
+            arrow  = "+" if s.get("change", 0) >= 0 else "-"
+            ticker = s['ticker']
+            price  = s['price']
+            pct    = f"{arrow}{s['pct']}%"
+
+            slot_left  = i * slot_w
+            slot_right = SCREEN_W - (i + 1) * slot_w
+
+            # ticker — left of slot
+            fb.ui_text(ticker,
+                    top=STOCK_BAR_Y + 10,
+                    left=slot_left + padding,
+                    right=slot_right + padding,
+                    size=10)
+
+            # price — second line
+            fb.ui_text(price,
+                    top=STOCK_BAR_Y + 32,
+                    left=slot_left + padding,
+                    right=slot_right + padding,
+                    size=11, bold=True)
+
+            # change — third line
+            fb.ui_text(pct,
+                    top=STOCK_BAR_Y + 52,
+                    left=slot_left + padding,
+                    right=slot_right + padding,
+                    size=10)
 
     def _draw_headlines(self):
         headlines = self.state.data.get("headlines", [])
