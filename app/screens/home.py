@@ -39,17 +39,17 @@ class HomeScreen:
     def partial_render(self):
         prev = self._prev_selected
         cur  = self.state.selected_index
+        print(f"partial_render: prev={prev} cur={cur}")
 
         if prev is not None and prev != cur:
             title_top = self._item_title_top(prev)
             erase_y   = title_top + SOURCE_UNDERLINE_OFFSET
-            # clear framebuffer
+            print(f"  erasing at y={erase_y}")
             fb.cls_region(top=erase_y, left=10, width=140, height=3)
-            # force e-ink to actually show the change
             fb.refresh_region(top=erase_y - 1, left=10, width=140, height=5)
 
-        # draw new underline
         title_top = self._item_title_top(cur)
+        print(f"  drawing at y={title_top + SOURCE_UNDERLINE_OFFSET}")
         fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
                 x_start=10, x_end=150, thickness=3)
 
