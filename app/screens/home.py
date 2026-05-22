@@ -16,7 +16,7 @@ class HomeScreen:
     def __init__(self, state):
         self.state = state
         self.full_render_needed = True
-        self._prev_selected = None
+        self._prev_selected = 0
 
     # ── main render ───────────────────────────────
 
