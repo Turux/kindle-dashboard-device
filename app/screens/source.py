@@ -16,28 +16,40 @@ class SourceScreen:
     def __init__(self, state):
         self.state = state
         self.full_render_needed = True
-        self._headlines = []    # cached for current source
+        self._headlines = []
+        self._prev_selected = None
 
     # ── main render ───────────────────────────────
 
     def render(self):
-        self._headlines = load_source(SOURCES[self.state.source_index])
+        self._headlines   = load_source(SOURCES[self.state.source_index])
+        self._prev_selected = None    # reset on full render
         fb.clear()
         self._draw_header()
         fb.hline(SOURCE_BAR_H)
         self._draw_headlines()
 
     def partial_render(self):
-        """Only redraw headlines — used on UP/DOWN"""
-        # flash=True forces a clean e-ink refresh, clears ghosting
-        fb.cls_region(
-            top=SOURCE_BAR_H + 1,
-            left=0,
-            width=SCREEN_W,
-            height=SCREEN_H - SOURCE_BAR_H,
-            flash=True          # <-- add this
-        )
-        self._draw_headlines()
+        """Erase old underline, draw new one — no region clear needed"""
+        # erase previous underline
+        prev = self._prev_selected
+        if prev is not None:
+            y_prev       = SOURCE_ITEMS_Y + (prev * SOURCE_ITEM_H)
+            h_prev       = self._headlines[prev] if prev < len(self._headlines) else {}
+            title_top    = y_prev + 30 if h_prev.get("date") else y_prev + 10
+            underline_y  = title_top + 20
+            # paint it white to erase
+            fb.cls_region(top=underline_y, left=10,
+                        width=580, height=2)
+
+        # draw new underline
+        cur        = self.state.selected_index
+        y_cur      = SOURCE_ITEMS_Y + (cur * SOURCE_ITEM_H)
+        h_cur      = self._headlines[cur] if cur < len(self._headlines) else {}
+        title_top  = y_cur + 30 if h_cur.get("date") else y_cur + 10
+        fb.hline(title_top + 20, x_start=10, x_end=590)
+
+        self._prev_selected = cur
 
     # ── sections ──────────────────────────────────
 
@@ -66,54 +78,45 @@ class SourceScreen:
 
         if not headlines:
             fb.ui_text("No articles cached.",
-                       top=SOURCE_BAR_H + 40,
-                       left=10, right=10, size=12)
+                    top=SOURCE_BAR_H + 40,
+                    left=10, right=10, size=12)
             fb.ui_text("Press Menu to sync.",
-                       top=SOURCE_BAR_H + 70,
-                       left=10, right=10, size=12)
+                    top=SOURCE_BAR_H + 70,
+                    left=10, right=10, size=12)
             return
 
         for i in range(count):
-            h           = headlines[i]
-            y           = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
-            is_selected = (i == selected)
+            h    = headlines[i]
+            y    = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
 
-            # date — small, top of item
-            date_str = h.get("date", "")
             # date
+            date_str = h.get("date", "")
             if date_str:
                 fb.ui_text(date_str,
                         top=y + 6,
                         left=10, right=10, size=10)
 
-            # headline title
-            title = fb.truncate(h.get("title", ""), 52)
-            # more breathing room between date and title
+            # title — no inversion, always plain
+            title     = fb.truncate(h.get("title", ""), 52)
             title_top = y + 30 if date_str else y + 10
+            fb.ui_text(title,
+                    top=title_top,
+                    left=10, right=10, size=13)
 
-            if is_selected:
-                fb.filled_rect(title_top - 4, 0, SCREEN_W, 38)
-                fb.ui_text(title,
-                        top=title_top,
-                        left=10, right=10,
-                        size=13, inverted=True)
-            else:
-                fb.ui_text(title,
-                        top=title_top,
-                        left=10, right=10, size=13)
+            # selection indicator — underline only
+            if i == selected:
+                fb.hline(title_top + 20, x_start=10, x_end=590)
 
-            # summary — lighter, smaller, below title
+            # summary
             summary = h.get("summary", "")
             if summary:
-                summary_short = fb.truncate(summary, 80)
-                fb.ui_text(summary_short,
-                           top=y + 62,
-                           left=10, right=10, size=10)
+                fb.ui_text(fb.truncate(summary, 80),
+                        top=y + 62,
+                        left=10, right=10, size=10)
 
-            # divider
+            # item divider
             if i < count - 1:
                 fb.hline(y + SOURCE_ITEM_H)
-
     # ── input ─────────────────────────────────────
 
     def handle_input(self):
