@@ -30,4 +30,4 @@ MAX_HEADLINES_HOME   = 4    # headlines shown on home screen
 MAX_HEADLINES_SOURCE = 6    # headlines shown in source view
 
 # ── VM endpoint ───────────────────────────────────
-VM_ENDPOINT = "http://your-oracle-vm/api/full-sync"
+VM_ENDPOINT = "https://kindle.turux.co.uk/api/full-sync"
