@@ -28,7 +28,6 @@ class HomeScreen:
         self._draw_widgets()
         fb.hline(WIDGET_ROW_Y + WIDGET_ROW_H)
         self._draw_stocks()
-        fb.hline(STOCK_BAR_Y + STOCK_BAR_H)
         self._draw_headlines()
         self._prev_selected = 0
 
