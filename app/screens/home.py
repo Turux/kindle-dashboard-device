@@ -125,21 +125,12 @@ class HomeScreen:
                        top=y + 8, left=WIDGET_PADDING,
                        right=10, size=10)
 
-            # headline text — inverted bar if selected
-            title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
-            if is_selected:
-                fb.filled_rect(y + 28, 0, SCREEN_W, 48)
-                fb.ui_text(title,
-                           top=y + 30, left=WIDGET_PADDING,
-                           right=10, size=13, inverted=True)
-            else:
-                fb.ui_text(title,
-                           top=y + 30, left=WIDGET_PADDING,
-                           right=10, size=13)
-
-            # divider between items, not after last
-            if i < 3:
-                fb.hline(y + HEADLINE_ITEM_H)
+        fb.ui_text(title,
+                top=y + 30, left=WIDGET_PADDING,
+                right=10, size=13)
+        if is_selected:
+            fb.hline(y + 30 + SOURCE_UNDERLINE_OFFSET,
+                    x_start=10, x_end=150, thickness=3)
     
     def _redraw_headlines_only(self):
         # clear just the headlines zone
