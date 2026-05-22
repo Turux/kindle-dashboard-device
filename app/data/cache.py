@@ -117,7 +117,8 @@ def load_cache():
         ],
         "headlines": [
             {"source": "BBC",      
-             "title": "Scientists discover new approach to solar energy storage"},
+             "title": "Scientists discover new approach to solar energy storage",
+             "url_hash": "test001"},
             {"source": "Guardian", 
              "title": "UK inflation falls to lowest level in three years"},
             {"source": "Reuters",  

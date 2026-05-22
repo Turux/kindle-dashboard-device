@@ -1,0 +1,13 @@
+Scientists at the University of Cambridge have developed a new approach to storing solar energy that could revolutionise how we power our homes and cities.
+
+The breakthrough involves a liquid organic molecule that can absorb sunlight and store it as chemical energy for months at a time, releasing it as heat when needed.
+
+Unlike conventional batteries, the system degrades very little over time and requires no rare earth minerals, making it potentially far cheaper to produce at scale.
+
+The lead researcher described it as a kind of rechargeable fuel, one that could be pumped through pipes and stored in tanks like conventional heating oil but generated entirely from sunlight.
+
+The team is now working with industrial partners to develop a prototype system suitable for domestic installation, with trials expected to begin within two years.
+
+If successful, the technology could complement existing solar panel installations by solving the fundamental problem of intermittency, storing summer sunshine for use in winter months when demand for heating is highest.
+
+The research was funded by the European Research Council and published this week in the journal Nature Energy.

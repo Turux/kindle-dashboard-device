@@ -32,6 +32,9 @@ SOURCE_ITEMS_Y  = 50
 SOURCE_ITEM_H   = 125   # 6 items × 125 = 750px
 SOURCE_UNDERLINE_OFFSET = 28  # px below title_top, tune if needed
 
+# ── source view ───────────────────────────────────
+ARTICLE_HEADER_H = 50
+
 # ── typography (fbink sizes) ──────────────────────
 SIZE_SMALL  = "1"
 SIZE_MEDIUM = "2"
