@@ -63,12 +63,20 @@ class ArticleScreen:
                 wrapped = textwrap.wrap(para, width=ARTICLE_CHARS_PER_LINE)
                 lines.extend(wrapped)
 
+        # calculate how many body lines fit on page 1
+        # accounting for title height dynamically
+        title_lines  = len(textwrap.wrap(self._title,
+                                        width=ARTICLE_TITLE_CHARS))
+        title_px     = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
+        available_px = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
+        page_1_lines = available_px // ARTICLE_LINE_HEIGHT
+
         pages  = []
         i      = 0
         page_n = 0
 
         while i < len(lines):
-            capacity = ARTICLE_LINES_PAGE_1 if page_n == 0 else ARTICLE_LINES_OTHER
+            capacity = page_1_lines if page_n == 0 else ARTICLE_LINES_OTHER
             page     = lines[i:i + capacity]
             pages.append(page)
             i      += capacity
@@ -81,15 +89,22 @@ class ArticleScreen:
     def _draw_header(self):
         page  = self.state.article_page
         total = len(self._pages)
+        h     = self.state.article or {}
+        date  = h.get("date", "")
 
-        fb.ui_text(self._source,
-                   top=ARTICLE_HEADER_H // 2 - 8,
-                   left=10, right=120,
-                   size=12, bold=True)
+        # source + date on the left
+        source_str = self._source
+        if date:
+            source_str += f"  {date}"
+
+        fb.ui_text(source_str,
+                top=ARTICLE_HEADER_H // 2 - 8,
+                left=10, right=120,
+                size=12, bold=True)
 
         fb.ui_text(f"{page + 1} of {total}",
-                   top=ARTICLE_HEADER_H // 2 - 8,
-                   left=460, right=10, size=11)
+                top=ARTICLE_HEADER_H // 2 - 8,
+                left=460, right=10, size=11)
 
     def _draw_page(self):
         page_idx = self.state.article_page
@@ -98,9 +113,8 @@ class ArticleScreen:
 
         lines = self._pages[page_idx]
 
-        # ── page 1: title block ───────────────────
         if page_idx == 0:
-            y = ARTICLE_MARGIN_TOP   # starts well below header
+            y = ARTICLE_MARGIN_TOP
             title_lines = textwrap.wrap(self._title,
                                         width=ARTICLE_TITLE_CHARS)
             for line in title_lines:
@@ -109,24 +123,21 @@ class ArticleScreen:
                         left=ARTICLE_MARGIN_LEFT,
                         right=ARTICLE_MARGIN_RIGHT,
                         size=16, bold=True)
-                y += ARTICLE_TITLE_LINE_H   # was 30
+                y += ARTICLE_TITLE_LINE_H
 
-            y += ARTICLE_TITLE_GAP  # breathing room after title
-
-        # ── page 2+: start at top ─────────────────
+            y += ARTICLE_TITLE_GAP
         else:
             y = ARTICLE_MARGIN_TOP
 
-        # ── body text ─────────────────────────────
         for line in lines:
             if line == "":
-                y += ARTICLE_LINE_HEIGHT // 2   # paragraph gap
+                y += ARTICLE_LINE_HEIGHT // 2
                 continue
             fb.read_text(line,
-                         top=y,
-                         left=ARTICLE_MARGIN_LEFT,
-                         right=ARTICLE_MARGIN_RIGHT,
-                         size=12)
+                        top=y,
+                        left=ARTICLE_MARGIN_LEFT,
+                        right=ARTICLE_MARGIN_RIGHT,
+                        size=12)
             y += ARTICLE_LINE_HEIGHT
 
     # ── input ─────────────────────────────────────
