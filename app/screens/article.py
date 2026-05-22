@@ -13,10 +13,10 @@ import textwrap
 ARTICLE_MARGIN_LEFT  = 15
 ARTICLE_MARGIN_RIGHT = 15
 ARTICLE_MARGIN_TOP   = 60   # below header
-ARTICLE_LINE_HEIGHT  = 28   # px between lines at size 15
+ARTICLE_LINE_HEIGHT  = 22   # px between lines at size 15
 ARTICLE_CHARS_PER_LINE = 46 # approx at size 15, tune after seeing on screen
-ARTICLE_LINES_PAGE_1 = 18   # less on page 1 — title takes space
-ARTICLE_LINES_OTHER  = 24   # more on subsequent pages
+ARTICLE_LINES_PAGE_1 = 20   # less on page 1 — title takes space
+ARTICLE_LINES_OTHER  = 28   # more on subsequent pages
 
 
 class ArticleScreen:
@@ -123,7 +123,7 @@ class ArticleScreen:
                            left=ARTICLE_MARGIN_LEFT,
                            right=ARTICLE_MARGIN_RIGHT,
                            size=16, bold=True)
-                y += 34   # title line height — slightly more than body
+                y += 28   # title line height — slightly more than body
 
             y += 12   # gap between title and body
 
@@ -136,7 +136,7 @@ class ArticleScreen:
                          top=y,
                          left=ARTICLE_MARGIN_LEFT,
                          right=ARTICLE_MARGIN_RIGHT,
-                         size=15)
+                         size=13)
             y += ARTICLE_LINE_HEIGHT
 
     # ── input ─────────────────────────────────────
