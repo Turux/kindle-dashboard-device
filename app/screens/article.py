@@ -70,7 +70,6 @@ class ArticleScreen:
         title_px     = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
         available_px = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
         page_1_lines = available_px // ARTICLE_LINE_HEIGHT
-        print(f"title_lines={title_lines} title_px={title_px} page_1_lines={page_1_lines}")
 
         pages  = []
         i      = 0
