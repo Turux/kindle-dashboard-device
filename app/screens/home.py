@@ -155,16 +155,23 @@ class HomeScreen:
                     top=y + 8, left=WIDGET_PADDING,
                     right=10, size=10)
 
-            # title — always plain, no inversion
+            # title
             title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
             fb.ui_text(title,
-                    top=y + 30, left=WIDGET_PADDING,
+                    top=y + 28, left=WIDGET_PADDING,
                     right=10, size=13)
 
-            # selection underline — short and thick
+            # selection underline
             if i == selected:
-                fb.hline(y + 30 + SOURCE_UNDERLINE_OFFSET,
+                fb.hline(y + 28 + SOURCE_UNDERLINE_OFFSET,
                         x_start=10, x_end=150, thickness=3)
+
+            # summary — only if there's room
+            summary = h.get("summary", "")
+            if summary:
+                fb.ui_text(fb.truncate(summary, 72),
+                        top=y + 58, left=WIDGET_PADDING,
+                        right=10, size=10)
     
     def _redraw_headlines_only(self):
         # clear just the headlines zone
