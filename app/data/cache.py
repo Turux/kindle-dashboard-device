@@ -1,6 +1,6 @@
 # app/data/cache.py
 
-import json, os, time, hashlib, ssl
+import json, os, time, hashlib, ssl, urllib.request
 from app.config import VM_ENDPOINT
 
 CACHE_DIR   = "/mnt/us/dashboard/cache"
