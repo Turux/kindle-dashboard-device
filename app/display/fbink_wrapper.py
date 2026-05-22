@@ -33,6 +33,10 @@ def cls_region(top, left, width, height, flash=False):
         args += ["-f"]
     _run(args)
 
+def refresh_region(top, left, width, height):
+    """Force e-ink display refresh of a specific region"""
+    _run(["-s", f"top={top},left={left},width={width},height={height}"])
+
 def flash():
     """Full screen flash to clear e-ink ghosting"""
     _run(["-f", "-k"])

@@ -41,12 +41,12 @@ class HomeScreen:
         cur  = self.state.selected_index
 
         if prev is not None and prev != cur:
-            # erase old underline
             title_top = self._item_title_top(prev)
-            fb.cls_region(
-                top=title_top + SOURCE_UNDERLINE_OFFSET,
-                left=10, width=140, height=3
-            )
+            erase_y   = title_top + SOURCE_UNDERLINE_OFFSET
+            # clear framebuffer
+            fb.cls_region(top=erase_y, left=10, width=140, height=3)
+            # force e-ink to actually show the change
+            fb.refresh_region(top=erase_y - 1, left=10, width=140, height=5)
 
         # draw new underline
         title_top = self._item_title_top(cur)
