@@ -1,6 +1,6 @@
 # app/data/cache.py
 
-import json, os, time, hashlib
+import json, os, time, hashlib, ssl
 from app.config import VM_ENDPOINT
 
 CACHE_DIR   = "/mnt/us/dashboard/cache"
@@ -9,16 +9,21 @@ META_FILE   = f"{CACHE_DIR}/meta.json"
 
 
 def sync_if_online():
-    """Call on wake — syncs everything if wifi is up"""
     if not is_wifi_on():
         return False
     try:
-        import urllib.request
-        with urllib.request.urlopen(VM_ENDPOINT, timeout=15) as r:
+        # create unverified context — Kindle lacks modern CA certs
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        
+        with urllib.request.urlopen(VM_ENDPOINT, timeout=15, 
+                                    context=ctx) as r:
             payload = json.loads(r.read())
         _write_cache(payload)
         return True
     except Exception as e:
+        print(f"sync failed: {e}")
         return False
 
 def _write_cache(payload):
