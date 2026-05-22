@@ -16,6 +16,7 @@ class HomeScreen:
     def __init__(self, state):
         self.state = state
         self.full_render_needed = True
+        self._prev_selected = None
 
     # ── main render ───────────────────────────────
 
@@ -28,17 +29,31 @@ class HomeScreen:
         self._draw_stocks()
         fb.hline(STOCK_BAR_Y + STOCK_BAR_H)
         self._draw_headlines()
+        self._prev_selected = 0
+
+    def _item_title_top(self, i):
+        """Single source of truth for title Y position of headline i"""
+        y = HEADLINES_Y + (i * HEADLINE_ITEM_H)
+        return y + 30
 
     def partial_render(self):
-        """Only redraw the headlines zone — used on UP/DOWN navigation"""
-        fb.cls_region(
-            top=HEADLINES_Y,
-            left=0,
-            width=SCREEN_W,
-            height=HEADLINES_H
-        )
-        fb.hline(HEADLINES_Y)
-        self._draw_headlines()
+        prev = self._prev_selected
+        cur  = self.state.selected_index
+
+        if prev is not None and prev != cur:
+            # erase old underline
+            title_top = self._item_title_top(prev)
+            fb.cls_region(
+                top=title_top + SOURCE_UNDERLINE_OFFSET,
+                left=10, width=140, height=3
+            )
+
+        # draw new underline
+        title_top = self._item_title_top(cur)
+        fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+                x_start=10, x_end=150, thickness=3)
+
+        self._prev_selected = cur
 
     # ── sections ──────────────────────────────────
 
