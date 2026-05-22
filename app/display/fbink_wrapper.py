@@ -42,23 +42,17 @@ def ui_text(string, top, left=10, right=10, size=12,
     """Helvetica — for all dashboard UI elements"""
     regular = FONT_UI_REGULAR
     bold_f  = FONT_UI_BOLD
+    style   = "BOLD" if bold else "REGULAR"
+
     font_str = (f"regular={regular},bold={bold_f},"
-                f"size={size},top={top},left={left},right={right}","padding=HORIZONTAL")
+                f"size={size},top={top},left={left},"
+                f"right={right},style={style}")
+
     args = ["-t", font_str]
     if inverted:
         args += ["-h"]
     if centered:
         args += ["-m"]
-    if bold:
-        args += []   # use **text** markdown, or pass style=BOLD
-        font_str = (f"regular={regular},bold={bold_f},"
-                    f"size={size},top={top},left={left},"
-                    f"right={right},style=BOLD")
-        args = ["-t", font_str]
-        if inverted:
-            args += ["-h"]
-        if centered:
-            args += ["-m"]
     args += ["--", string]
     _run(args)
 
