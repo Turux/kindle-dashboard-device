@@ -1,12 +1,12 @@
 # app/data/cache.py
 
 import json, os, time, hashlib
+from app.config import VM_ENDPOINT
 
 CACHE_DIR   = "/mnt/us/dashboard/cache"
 HOME_CACHE  = f"{CACHE_DIR}/home.json"
 META_FILE   = f"{CACHE_DIR}/meta.json"
 
-VM_ENDPOINT = "http://your-oracle-vm/api/full-sync"
 
 def sync_if_online():
     """Call on wake — syncs everything if wifi is up"""
@@ -60,7 +60,12 @@ def load_home():
 def load_source(source_id):
     path = f"{CACHE_DIR}/sources/{source_id}.json"
     if not os.path.exists(path):
-        return []
+        # dummy data for development
+        return [
+            {"title": "Test headline one", "date": "22 May", "summary": "Brief summary of the article goes here."},
+            {"title": "Test headline two", "date": "21 May", "summary": "Another brief summary here."},
+            {"title": "Test headline three", "date": "21 May", "summary": ""},
+        ]
     with open(path) as f:
         return json.load(f)
 
