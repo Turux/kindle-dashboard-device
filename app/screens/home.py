@@ -172,19 +172,6 @@ class HomeScreen:
                 fb.ui_text(fb.truncate(summary, 72),
                         top=y + 58, left=WIDGET_PADDING,
                         right=10, size=10)
-    
-    def _redraw_headlines_only(self):
-        # clear just the headlines zone
-        fb.cls_region(
-            top=HEADLINES_Y, 
-            left=0, 
-            width=SCREEN_W, 
-            height=HEADLINES_H
-        )
-        # redraw the top border
-        fb.hline(HEADLINES_Y)
-        # redraw just the headlines
-        self._draw_headlines()
 
     # ── input ─────────────────────────────────────
 
