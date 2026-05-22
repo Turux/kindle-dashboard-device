@@ -230,11 +230,12 @@ class HomeScreen:
                 self.full_render_needed = True
 
         elif key == KEY_KEYBOARD:
-            # emergency exit — kill app, restart framework
             import subprocess
-            subprocess.run(["/etc/init.d/framework", "start"])
-            import sys
-            sys.exit(0)
+            import time
+            fb.clear()
+            fb.ui_text("Rebooting...", top=380, size=14, centered=True)
+            time.sleep(1)
+            subprocess.run(["reboot"])
 
         elif is_page_forward(key) or is_page_backward(key):
             self.state.source_index   = 0
