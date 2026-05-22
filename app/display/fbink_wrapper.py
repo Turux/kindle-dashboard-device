@@ -82,12 +82,11 @@ def read_text(string, top, left=10, right=10, size=16,
         args = ["-h"] + args
     _run(args)
 
-def hline(y, x_start=0, x_end=600):
-    """Draw a 2px black horizontal line"""
-    # fill a 2px rectangle with black
+def hline(y, x_start=0, x_end=600, thickness=1):
     _run([
         "-k",
-        f"top={y},left={x_start},width={x_end - x_start},height=2",
+        f"top={y},left={x_start},"
+        f"width={x_end - x_start},height={thickness}",
         "-B", "BLACK"
     ])
 
