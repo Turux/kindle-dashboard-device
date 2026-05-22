@@ -133,19 +133,22 @@ class HomeScreen:
         for i in range(min(4, len(headlines))):
             h           = headlines[i]
             y           = HEADLINES_Y + (i * HEADLINE_ITEM_H)
-            is_selected = (i == selected)
 
-            # source label — small, grey feel via size 10
+            # source label
             fb.ui_text(h.get("source", ""),
-                       top=y + 8, left=WIDGET_PADDING,
-                       right=10, size=10)
+                    top=y + 8, left=WIDGET_PADDING,
+                    right=10, size=10)
 
-        fb.ui_text(title,
-                top=y + 30, left=WIDGET_PADDING,
-                right=10, size=13)
-        if is_selected:
-            fb.hline(y + 30 + SOURCE_UNDERLINE_OFFSET,
-                    x_start=10, x_end=150, thickness=3)
+            # title — always plain, no inversion
+            title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
+            fb.ui_text(title,
+                    top=y + 30, left=WIDGET_PADDING,
+                    right=10, size=13)
+
+            # selection underline — short and thick
+            if i == selected:
+                fb.hline(y + 30 + SOURCE_UNDERLINE_OFFSET,
+                        x_start=10, x_end=150, thickness=3)
     
     def _redraw_headlines_only(self):
         # clear just the headlines zone
