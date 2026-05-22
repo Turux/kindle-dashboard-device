@@ -21,16 +21,17 @@ class ArticleScreen:
 
     # ── main render ───────────────────────────────
 
-    def render(self):
+    def render(self, flash=True):
         self._prepare()
         fb.clear()
-        fb.flash()
+        if flash:
+            fb.flash()
         self._draw_header()
         fb.hline(ARTICLE_HEADER_H)
         self._draw_page()
 
     def partial_render(self):
-        self.render()
+        self.render(flash=False)
 
     # ── preparation ───────────────────────────────
 
@@ -104,11 +105,11 @@ class ArticleScreen:
                                         width=ARTICLE_TITLE_CHARS)
             for line in title_lines:
                 fb.ui_text(line,
-                           top=y,
-                           left=ARTICLE_MARGIN_LEFT,
-                           right=ARTICLE_MARGIN_RIGHT,
-                           size=16, bold=True)
-                y += 30   # title line height
+                        top=y,
+                        left=ARTICLE_MARGIN_LEFT,
+                        right=ARTICLE_MARGIN_RIGHT,
+                        size=16, bold=True)
+                y += ARTICLE_TITLE_LINE_H   # was 30
 
             y += ARTICLE_TITLE_GAP  # breathing room after title
 
