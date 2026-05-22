@@ -47,7 +47,7 @@ ARTICLE_CHARS_PER_LINE = 50
 ARTICLE_LINES_PAGE_1   = 21
 ARTICLE_LINES_OTHER    = 30
 ARTICLE_TITLE_GAP      = 14   # gap between title block and body
-ARTICLE_TITLE_CHARS    = 42
+ARTICLE_TITLE_CHARS    = 32
 ARTICLE_TITLE_LINE_H   = 36
 
 # ── typography (fbink sizes) ──────────────────────
