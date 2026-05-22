@@ -43,7 +43,7 @@ def ui_text(string, top, left=10, right=10, size=12,
     regular = FONT_UI_REGULAR
     bold_f  = FONT_UI_BOLD
     font_str = (f"regular={regular},bold={bold_f},"
-                f"size={size},top={top},left={left},right={right}")
+                f"size={size},top={top},left={left},right={right}","padding=HORIZONTAL")
     args = ["-t", font_str]
     if inverted:
         args += ["-h"]
@@ -76,7 +76,8 @@ def read_text(string, top, left=10, right=10, size=16,
     style   = "BOLD" if bold else "REGULAR"
     font_str = (f"regular={regular},bold={bold_f},"
                 f"size={size},top={top},left={left},"
-                f"right={right},style={style}")
+                f"right={right},style={style}",
+                f"padding=HORIZONTAL")
     args = ["-t", font_str, "--", string]
     if inverted:
         args = ["-h"] + args
