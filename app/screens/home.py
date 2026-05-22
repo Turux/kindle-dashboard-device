@@ -4,7 +4,7 @@ from app.display import fbink_wrapper as fb
 from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_UP, KEY_DOWN, KEY_SELECT,
-                             KEY_BACK, KEY_HOME, KEY_MENU,
+                             KEY_BACK, KEY_HOME, KEY_MENU, KEY_KEYBOARD,
                              is_page_forward, is_page_backward)
 from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
@@ -228,7 +228,7 @@ class HomeScreen:
                 import time
                 time.sleep(2)
                 self.full_render_needed = True
-                
+
         elif key == KEY_KEYBOARD:
             # emergency exit — kill app, restart framework
             import subprocess
