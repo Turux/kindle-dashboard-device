@@ -40,14 +40,12 @@ def flash():
 def ui_text(string, top, left=10, right=10, size=12,
             bold=False, inverted=False, centered=False):
     """Helvetica — for all dashboard UI elements"""
-    regular = FONT_UI_REGULAR
-    bold_f  = FONT_UI_BOLD
-    style   = "BOLD" if bold else "REGULAR"
-
+    regular  = FONT_UI_REGULAR
+    bold_f   = FONT_UI_BOLD
+    style    = "BOLD" if bold else "REGULAR"
     font_str = (f"regular={regular},bold={bold_f},"
                 f"size={size},top={top},left={left},"
                 f"right={right},style={style}")
-
     args = ["-t", font_str]
     if inverted:
         args += ["-h"]
@@ -56,28 +54,28 @@ def ui_text(string, top, left=10, right=10, size=12,
     args += ["--", string]
     _run(args)
 
+def read_text(string, top, left=10, right=10, size=16,
+              bold=False, inverted=False):
+    """Caecilia — for article reading"""
+    regular  = FONT_READ_REG
+    bold_f   = FONT_READ_BOLD
+    style    = "BOLD" if bold else "REGULAR"
+    font_str = (f"regular={regular},bold={bold_f},"
+                f"size={size},top={top},left={left},"
+                f"right={right},style={style}")
+    args = ["-t", font_str, "--", string]
+    if inverted:
+        args = ["-h"] + args
+    _run(args)
+
 def truncate(text, max_chars, ellipsis="..."):
     """Truncate string to max_chars, adding ellipsis if needed"""
     if len(text) <= max_chars:
         return text
     return text[:max_chars - len(ellipsis)] + ellipsis
 
-def read_text(string, top, left=10, right=10, size=16,
-              bold=False, inverted=False):
-    """Caecilia — for article reading"""
-    regular = FONT_READ_REG
-    bold_f  = FONT_READ_BOLD
-    style   = "BOLD" if bold else "REGULAR"
-    font_str = (f"regular={regular},bold={bold_f},"
-                f"size={size},top={top},left={left},"
-                f"right={right},style={style}",
-                f"padding=HORIZONTAL")
-    args = ["-t", font_str, "--", string]
-    if inverted:
-        args = ["-h"] + args
-    _run(args)
-
 def hline(y, x_start=0, x_end=600, thickness=1):
+    """Draw a horizontal line in black"""
     _run([
         "-k",
         f"top={y},left={x_start},"
@@ -89,13 +87,11 @@ def vline(x, y_start=0, y_end=800):
     """1px vertical rule"""
     _run(["-k",
           f"top={y_start},left={x},"
-          f"width=1,height={y_end - y_start}"])
-    _run(["-s",
-          f"top={y_start},left={x},"
-          f"width=1,height={y_end - y_start}"])
+          f"width=1,height={y_end - y_start}",
+          "-B", "BLACK"])
 
 def filled_rect(top, left, width, height, color="BLACK"):
-    """Filled rectangle — useful for inverted headers"""
+    """Filled rectangle"""
     _run(["-k",
           f"top={top},left={left},"
           f"width={width},height={height}",
