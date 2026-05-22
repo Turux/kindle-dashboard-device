@@ -33,15 +33,16 @@ SOURCE_ITEM_H   = 125   # 6 items × 125 = 750px
 SOURCE_UNDERLINE_OFFSET = 28  # px below title_top, tune if needed
 
 # ── article screen ────────────────────────────────
-ARTICLE_HEADER_H       = 50
+ARTICLE_HEADER_H       = 60
 ARTICLE_MARGIN_LEFT    = 15
-ARTICLE_MARGIN_RIGHT   = 20
-ARTICLE_MARGIN_TOP     = 60    # header height + breathing room
-ARTICLE_LINE_HEIGHT    = 26
-ARTICLE_CHARS_PER_LINE = 44
-ARTICLE_LINES_PAGE_1   = 18
-ARTICLE_LINES_OTHER    = 26
+ARTICLE_MARGIN_RIGHT   = 10
+ARTICLE_MARGIN_TOP     = 75    # header height + breathing room
+ARTICLE_LINE_HEIGHT    = 28
+ARTICLE_CHARS_PER_LINE = 50
+ARTICLE_LINES_PAGE_1   = 24
+ARTICLE_LINES_OTHER    = 30
 ARTICLE_TITLE_GAP      = 14   # gap between title block and body
+ARTICLE_TITLE_CHARS    = 42 
 
 # ── typography (fbink sizes) ──────────────────────
 SIZE_SMALL  = "1"

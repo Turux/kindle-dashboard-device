@@ -101,7 +101,7 @@ class ArticleScreen:
         if page_idx == 0:
             y = ARTICLE_MARGIN_TOP   # starts well below header
             title_lines = textwrap.wrap(self._title,
-                                        width=ARTICLE_CHARS_PER_LINE)
+                                        width=ARTICLE_TITLE_CHARS)
             for line in title_lines:
                 fb.ui_text(line,
                            top=y,
