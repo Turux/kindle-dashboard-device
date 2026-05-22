@@ -117,37 +117,29 @@ class HomeScreen:
         if not stocks:
             return
 
-        slot_w  = SCREEN_W // len(stocks)
-        padding = 8
+        slot_w = SCREEN_W // len(stocks)
 
         for i, s in enumerate(stocks):
-            arrow  = "+" if s.get("change", 0) >= 0 else "-"
-            ticker = s['ticker']
-            price  = s['price']
-            pct    = f"{arrow}{s['pct']}%"
-
+            arrow      = "+" if s.get("change", 0) >= 0 else "-"
             slot_left  = i * slot_w
             slot_right = SCREEN_W - (i + 1) * slot_w
 
-            # ticker — left of slot
-            fb.ui_text(ticker,
-                    top=STOCK_BAR_Y + 10,
-                    left=slot_left + padding,
-                    right=slot_right + padding,
+            fb.ui_text(s['ticker'],
+                    top=STOCK_BAR_Y + STOCK_TICKER_Y,
+                    left=slot_left + STOCK_PADDING,
+                    right=slot_right + STOCK_PADDING,
                     size=10)
 
-            # price — second line
-            fb.ui_text(price,
-                    top=STOCK_BAR_Y + 32,
-                    left=slot_left + padding,
-                    right=slot_right + padding,
+            fb.ui_text(s['price'],
+                    top=STOCK_BAR_Y + STOCK_PRICE_Y,
+                    left=slot_left + STOCK_PADDING,
+                    right=slot_right + STOCK_PADDING,
                     size=11, bold=True)
 
-            # change — third line
-            fb.ui_text(pct,
-                    top=STOCK_BAR_Y + 52,
-                    left=slot_left + padding,
-                    right=slot_right + padding,
+            fb.ui_text(f"{arrow}{s['pct']}%",
+                    top=STOCK_BAR_Y + STOCK_CHANGE_Y,
+                    left=slot_left + STOCK_PADDING,
+                    right=slot_right + STOCK_PADDING,
                     size=10)
 
     def _draw_headlines(self):
