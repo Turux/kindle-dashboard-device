@@ -29,7 +29,7 @@ class HomeScreen:
         fb.hline(WIDGET_ROW_Y + WIDGET_ROW_H)
         self._draw_stocks()
         self._draw_headlines()
-        self._prev_selected = 0
+        self._prev_selected = self.state.selected_index  # ← fix
 
     def _item_title_top(self, i):
         """Single source of truth for title Y position of headline i"""
