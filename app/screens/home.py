@@ -85,32 +85,32 @@ class HomeScreen:
                    top=WIDGET_ROW_Y + 135, left=left, right=right, size=11)
 
     def _draw_f1(self):
-        d     = self.state.data.get("f1", {})
-        left  = COL_F1 + 10
-        right = SCREEN_W - WIDGET_W - COL_F1 + 10
+        d    = self.state.data.get("f1", {})
+        left = COL_F1 + 10
+        right = SCREEN_W - COL_F1 - WIDGET_W + 10
 
-        fb.ui_text("Next Race",
-                   top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text("F1",
+                top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text(d.get("label", "---"),
+                top=WIDGET_ROW_Y + 35, left=left, right=right, size=11)
         fb.ui_text(fb.truncate(d.get("name", "---"), 16),
-                   top=WIDGET_ROW_Y + 35, left=left, right=right, size=14)
+                top=WIDGET_ROW_Y + 60, left=left, right=right, size=14)
         fb.ui_text(d.get("date", "---"),
-                   top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
-        fb.ui_text(d.get("time", "---"),
-                   top=WIDGET_ROW_Y + 100, left=left, right=right, size=22)
+                top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_sailgp(self):
-        d     = self.state.data.get("sailgp", {})
-        left  = COL_SAILGP + 10
+        d    = self.state.data.get("sailgp", {})
+        left = COL_SAILGP + 10
         right = 10
 
         fb.ui_text("SailGP",
-                   top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("event", "---"), 16),
-                   top=WIDGET_ROW_Y + 35, left=left, right=right, size=13)
-        fb.ui_text(d.get("dates", "---"),
-                   top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
-        fb.ui_text(d.get("round", "---"),
-                   top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
+                top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
+        fb.ui_text(d.get("label", "---"),
+                top=WIDGET_ROW_Y + 35, left=left, right=right, size=11)
+        fb.ui_text(fb.truncate(d.get("name", "---"), 16),
+                top=WIDGET_ROW_Y + 60, left=left, right=right, size=14)
+        fb.ui_text(d.get("date", "---"),
+                top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_stocks(self):
         stocks = self.state.data.get("stocks", [])

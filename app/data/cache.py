@@ -98,14 +98,14 @@ def load_cache():
             "rain": "Rain 70%"
         },
         "f1": {
-            "name": "Monaco GP",
-            "date": "Sun 25 May",
-            "time": "14:00"
+            "label":   "Next Session",
+            "name":    "Canada FP1",
+            "date":    "22 May 17:30",
         },
         "sailgp": {
-            "event": "Taranto, Italy",
-            "dates": "12-13 June",
-            "round": "Round 7"
+            "label":   "Next Event",
+            "name":    "New York Race 1",
+            "date":    "30 May 15:30",
         },
         "stocks": [
             {"ticker": "AAPL", "price": "213.4", 
