@@ -25,33 +25,37 @@ class SourceScreen:
         self._headlines   = load_source(SOURCES[self.state.source_index])
         self._prev_selected = None    # reset on full render
         fb.clear()
+        fb.flash()
         self._draw_header()
         fb.hline(SOURCE_BAR_H)
         self._draw_headlines()
 
     def partial_render(self):
-        """Erase old underline, draw new one — no region clear needed"""
-        # erase previous underline
         prev = self._prev_selected
-        if prev is not None:
-            y_prev       = SOURCE_ITEMS_Y + (prev * SOURCE_ITEM_H)
-            h_prev       = self._headlines[prev] if prev < len(self._headlines) else {}
-            title_top    = y_prev + 30 if h_prev.get("date") else y_prev + 10
-            underline_y  = title_top + 20
-            # paint it white to erase
-            fb.cls_region(top=underline_y, left=10,
-                        width=580, height=2)
+        cur  = self.state.selected_index
+
+        if prev is not None and prev != cur:
+            # erase old underline — 3px tall to be safe
+            title_top = self._item_title_top(prev)
+            fb.cls_region(
+                top=title_top + SOURCE_UNDERLINE_OFFSET,
+                left=10, width=580, height=3
+            )
 
         # draw new underline
-        cur        = self.state.selected_index
-        y_cur      = SOURCE_ITEMS_Y + (cur * SOURCE_ITEM_H)
-        h_cur      = self._headlines[cur] if cur < len(self._headlines) else {}
-        title_top  = y_cur + 30 if h_cur.get("date") else y_cur + 10
-        fb.hline(title_top + 20, x_start=10, x_end=590)
+        title_top = self._item_title_top(cur)
+        fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+                x_start=10, x_end=590)
 
         self._prev_selected = cur
 
     # ── sections ──────────────────────────────────
+
+    def _item_title_top(self, i):
+        """Calculate title_top for item i — single source of truth"""
+        h   = self._headlines[i] if i < len(self._headlines) else {}
+        y   = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
+        return y + 30 if h.get("date") else y + 10
 
     def _draw_header(self):
         source_id   = SOURCES[self.state.source_index]
@@ -86,8 +90,9 @@ class SourceScreen:
             return
 
         for i in range(count):
-            h    = headlines[i]
-            y    = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
+            h         = headlines[i]
+            y         = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
+            title_top = self._item_title_top(i)
 
             # date
             date_str = h.get("date", "")
@@ -96,16 +101,16 @@ class SourceScreen:
                         top=y + 6,
                         left=10, right=10, size=10)
 
-            # title — no inversion, always plain
-            title     = fb.truncate(h.get("title", ""), 52)
-            title_top = y + 30 if date_str else y + 10
+            # title
+            title = fb.truncate(h.get("title", ""), 52)
             fb.ui_text(title,
                     top=title_top,
                     left=10, right=10, size=13)
 
-            # selection indicator — underline only
+            # underline selected item
             if i == selected:
-                fb.hline(title_top + 20, x_start=10, x_end=590)
+                fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+                        x_start=10, x_end=590)
 
             # summary
             summary = h.get("summary", "")

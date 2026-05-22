@@ -30,6 +30,10 @@ def cls_region(top, left, width, height, flash=False):
         args += ["-f"]
     _run(args)
 
+def flash():
+    """Full screen flash to clear e-ink ghosting"""
+    _run(["-f", "-k"])
+
 def ui_text(string, top, left=10, right=10, size=12,
             bold=False, inverted=False, centered=False):
     """Helvetica — for all dashboard UI elements"""
