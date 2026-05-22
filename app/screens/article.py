@@ -13,10 +13,10 @@ import textwrap
 ARTICLE_MARGIN_LEFT  = 15
 ARTICLE_MARGIN_RIGHT = 15
 ARTICLE_MARGIN_TOP   = 60   # below header
-ARTICLE_LINE_HEIGHT  = 22   # px between lines at size 15
-ARTICLE_CHARS_PER_LINE = 46 # approx at size 15, tune after seeing on screen
-ARTICLE_LINES_PAGE_1 = 20   # less on page 1 — title takes space
-ARTICLE_LINES_OTHER  = 28   # more on subsequent pages
+ARTICLE_LINE_HEIGHT  = 20   # px between lines at size 15
+ARTICLE_CHARS_PER_LINE = 48 # approx at size 15, tune after seeing on screen
+ARTICLE_LINES_PAGE_1 = 22   # less on page 1 — title takes space
+ARTICLE_LINES_OTHER  = 30   # more on subsequent pages
 
 
 class ArticleScreen:
@@ -33,6 +33,7 @@ class ArticleScreen:
     def render(self):
         self._prepare()
         fb.clear()
+        fb.flash()
         self._draw_header()
         fb.hline(ARTICLE_HEADER_H)
         self._draw_page()
@@ -132,11 +133,11 @@ class ArticleScreen:
             if line == "":
                 y += ARTICLE_LINE_HEIGHT // 2   # paragraph gap
                 continue
-            fb.read_text(line,
-                         top=y,
-                         left=ARTICLE_MARGIN_LEFT,
-                         right=ARTICLE_MARGIN_RIGHT,
-                         size=13)
+            fb.ui_text(line,
+                top=y,
+                left=ARTICLE_MARGIN_LEFT,
+                right=ARTICLE_MARGIN_RIGHT,
+                size=12)
             y += ARTICLE_LINE_HEIGHT
 
     # ── input ─────────────────────────────────────
