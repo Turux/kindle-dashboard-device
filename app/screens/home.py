@@ -40,32 +40,15 @@ class HomeScreen:
         prev = self._prev_selected
         cur  = self.state.selected_index
 
-        if prev == cur:
-            return
+        if prev is not None and prev != cur:
+            title_top = self._item_title_top(prev)
+            fb.cls_region(
+                top=title_top + SOURCE_UNDERLINE_OFFSET,
+                left=10, width=140, height=3)
 
-        # redraw both affected items cleanly
-        for i in [prev, cur]:
-            if i is None:
-                continue
-            headlines = self.state.data.get("headlines", [])
-            if i >= len(headlines):
-                continue
-            h = headlines[i]
-            y = HEADLINES_Y + (i * HEADLINE_ITEM_H)
-
-            # clear the item's underline area only
-            fb.cls_region(top=y + 28, left=0,
-                        width=SCREEN_W, height=60)
-
-            # redraw title
-            title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
-            fb.ui_text(title, top=y + 28, left=WIDGET_PADDING,
-                    right=10, size=13)
-
-            # redraw underline only if selected
-            if i == cur:
-                fb.hline(y + 28 + SOURCE_UNDERLINE_OFFSET,
-                        x_start=10, x_end=150, thickness=3)
+        title_top = self._item_title_top(cur)
+        fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+                x_start=10, x_end=150, thickness=3)
 
         self._prev_selected = cur
 
