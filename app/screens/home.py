@@ -22,6 +22,7 @@ class HomeScreen:
 
     def render(self):
         fb.clear()
+        fb.flash()
         self._draw_date_bar()
         fb.hline(DATE_BAR_H)
         self._draw_widgets()
