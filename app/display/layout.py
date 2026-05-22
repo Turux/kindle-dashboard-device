@@ -30,7 +30,7 @@ SOURCE_BAR_Y    = 0
 SOURCE_BAR_H    = 50
 SOURCE_ITEMS_Y  = 50
 SOURCE_ITEM_H   = 125   # 6 items × 125 = 750px
-SOURCE_UNDERLINE_OFFSET = 24  # px below title_top, tune if needed
+SOURCE_UNDERLINE_OFFSET = 28  # px below title_top, tune if needed
 
 # ── typography (fbink sizes) ──────────────────────
 SIZE_SMALL  = "1"

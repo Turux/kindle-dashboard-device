@@ -25,7 +25,10 @@ def clear():
     _run(["-k"])
 
 def cls_region(top, left, width, height, flash=False):
-    args = ["-k", f"top={top},left={left},width={width},height={height}"]
+    """Clear a region to white"""
+    args = ["-k",
+            f"top={top},left={left},width={width},height={height}",
+            "-B", "WHITE"]
     if flash:
         args += ["-f"]
     _run(args)
@@ -80,13 +83,13 @@ def read_text(string, top, left=10, right=10, size=16,
     _run(args)
 
 def hline(y, x_start=0, x_end=600):
-    """1px horizontal rule"""
-    _run(["-k",
-          f"top={y},left={x_start},"
-          f"width={x_end - x_start},height=1"])
-    _run(["-s",
-          f"top={y},left={x_start},"
-          f"width={x_end - x_start},height=1"])
+    """Draw a 2px black horizontal line"""
+    # fill a 2px rectangle with black
+    _run([
+        "-k",
+        f"top={y},left={x_start},width={x_end - x_start},height=2",
+        "-B", "BLACK"
+    ])
 
 def vline(x, y_start=0, y_end=800):
     """1px vertical rule"""
