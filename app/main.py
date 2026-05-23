@@ -15,6 +15,7 @@ from app.data.cache import sync_if_online, load_home
 
 def _sleep_watcher(state):
     import subprocess
+    from app.input.dpad import inject_event, KEY_SLEEP, KEY_WAKE
     while True:
         result = subprocess.run(
             ["lipc-wait-event", "-s", "60",
@@ -24,8 +25,10 @@ def _sleep_watcher(state):
         )
         if "goingToScreenSaver" in result.stdout:
             state.sleeping = True
+            inject_event(KEY_SLEEP)
         elif "outOfScreenSaver" in result.stdout:
             state.sleeping = False
+            inject_event(KEY_WAKE)
 
 def main():
     start_input()

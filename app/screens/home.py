@@ -4,7 +4,7 @@ from app.display import fbink_wrapper as fb
 from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_UP, KEY_DOWN, KEY_SELECT,
-                             KEY_BACK, KEY_HOME, KEY_MENU, KEY_KEYBOARD,
+                             KEY_BACK, KEY_HOME, KEY_MENU, KEY_KEYBOARD, KEY_SLEEP, KEY_WAKE,
                              is_page_forward, is_page_backward)
 from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
@@ -238,6 +238,12 @@ class HomeScreen:
             fb.ui_text("Rebooting...", top=380, size=14, centered=True)
             time.sleep(1)
             subprocess.run(["reboot"])
+
+        elif key == KEY_SLEEP:
+            self.full_render_needed = True   # redraw with zzz
+
+        elif key == KEY_WAKE:
+            self.full_render_needed = True   # redraw without zzz
 
         elif is_page_forward(key) or is_page_backward(key):
             self.state.source_index   = 0

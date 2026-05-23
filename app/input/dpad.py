@@ -23,6 +23,8 @@ KEY_RIGHT_PREV = 109
 KEY_RIGHT_NEXT = 191
 KEY_LEFT_PREV  = 193
 KEY_LEFT_NEXT  = 104
+KEY_SLEEP = 999   # synthetic event for sleep state change
+KEY_WAKE  = 998
 
 # ── logical aliases (use these in app code) ───────
 PAGE_FORWARD  = {KEY_RIGHT_NEXT, KEY_LEFT_NEXT}
@@ -63,3 +65,7 @@ def is_page_forward(key):
 
 def is_page_backward(key):
     return key in PAGE_BACKWARD
+
+def inject_event(code):
+    """Inject a synthetic key event into the input queue"""
+    _queue.put(code)
