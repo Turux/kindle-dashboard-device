@@ -118,27 +118,29 @@ class ArticleScreen:
             title_lines = textwrap.wrap(self._title,
                                         width=ARTICLE_TITLE_CHARS)
             for line in title_lines:
-                fb.ui_text(line,
+                fb.ui_text_norefresh(line,
                         top=y,
                         left=ARTICLE_MARGIN_LEFT,
                         right=ARTICLE_MARGIN_RIGHT,
                         size=16, bold=True)
                 y += ARTICLE_TITLE_LINE_H
-
             y += ARTICLE_TITLE_GAP
         else:
             y = ARTICLE_MARGIN_TOP
 
         for line in lines:
             if line == "":
-                y += ARTICLE_LINE_HEIGHT // 2
+                y += ARTICLE_LINE_HEIGHT
                 continue
-            fb.read_text(line,
+            fb.read_text_norefresh(line,
                         top=y,
                         left=ARTICLE_MARGIN_LEFT,
                         right=ARTICLE_MARGIN_RIGHT,
                         size=12)
             y += ARTICLE_LINE_HEIGHT
+
+        # single refresh after everything is drawn
+        fb.refresh_screen()
 
     # ── input ─────────────────────────────────────
 
