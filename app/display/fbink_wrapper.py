@@ -72,6 +72,28 @@ def read_text(string, top, left=10, right=10, size=16,
         args = ["-h"] + args
     _run(args)
 
+def ui_text_norefresh(string, top, left=10, right=10, size=12,
+                      bold=False):
+    """Helvetica — draw without triggering e-ink refresh"""
+    style    = "BOLD" if bold else "REGULAR"
+    font_str = (f"regular={FONT_UI_REGULAR},bold={FONT_UI_BOLD},"
+                f"size={size},top={top},left={left},"
+                f"right={right},style={style}")
+    args = ["-b", "-t", font_str, "--", string]
+    _run(args)
+
+def read_text_norefresh(string, top, left=10, right=10, size=12):
+    """Caecilia — draw without triggering e-ink refresh"""
+    font_str = (f"regular={FONT_READ_REG},bold={FONT_READ_BOLD},"
+                f"size={size},top={top},left={left},"
+                f"right={right},style=REGULAR")
+    args = ["-b", "-t", font_str, "--", string]
+    _run(args)
+
+def refresh_screen():
+    """Single full screen refresh after batch drawing"""
+    _run(["-s", "top=0,left=0,width=600,height=800"])
+
 def truncate(text, max_chars, ellipsis="..."):
     """Truncate string to max_chars, adding ellipsis if needed"""
     if len(text) <= max_chars:
