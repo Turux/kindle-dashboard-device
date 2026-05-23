@@ -2,6 +2,40 @@
 
 import json, os, time, hashlib, ssl, urllib.request
 from app.config import VM_ENDPOINT
+import subprocess
+
+def get_battery():
+    try:
+        result = subprocess.run(
+            ["lipc-get-prop", "com.lab126.powerd", "battLevel"],
+            capture_output=True, text=True, timeout=3
+        )
+        val = result.stdout.strip()
+        return int(val) if val.isdigit() else None
+    except:
+        return None
+
+def get_wifi_state():
+    try:
+        result = subprocess.run(
+            ["lipc-get-prop", "com.lab126.wifid", "cmState"],
+            capture_output=True, text=True, timeout=3
+        )
+        return result.stdout.strip() == "CONNECTED"
+    except:
+        return is_wifi_on()   # fallback to sysfs check
+
+def is_sleeping():
+    """Listen for sleep event non-blocking — returns True if going to sleep"""
+    try:
+        result = subprocess.run(
+            ["lipc-wait-event", "-s", "1",
+             "com.lab126.powerd", "goingToScreenSaver"],
+            capture_output=True, text=True, timeout=2
+        )
+        return "goingToScreenSaver" in result.stdout
+    except:
+        return False
 
 CACHE_DIR   = "/mnt/us/dashboard/cache"
 HOME_CACHE  = f"{CACHE_DIR}/home.json"

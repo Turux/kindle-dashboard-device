@@ -54,11 +54,28 @@ class HomeScreen:
 
     # ── sections ──────────────────────────────────
 
+    
+
     def _draw_date_bar(self):
-        now = datetime.now()
+        from app.data.cache import get_battery, get_wifi_state
+        now      = datetime.now()
         date_str = now.strftime("%A  %d %B %Y")
         fb.ui_text(date_str, top=15, left=10, right=10,
-                   size=16, bold=True, centered=True)
+                size=16, bold=True, centered=True)
+
+        # status — battery and wifi right-aligned
+        batt = get_battery()
+        wifi = get_wifi_state()
+
+        status_parts = []
+        if wifi:
+            status_parts.append("W")
+        if batt is not None:
+            status_parts.append(f"{batt}%")
+
+        if status_parts:
+            fb.ui_text("  ".join(status_parts),
+                    top=20, left=490, right=5, size=10)
 
     def _draw_widgets(self):
         fb.vline(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
