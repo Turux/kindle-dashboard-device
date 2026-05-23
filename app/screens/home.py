@@ -63,19 +63,20 @@ class HomeScreen:
         fb.ui_text(date_str, top=15, left=10, right=10,
                 size=16, bold=True, centered=True)
 
-        # status — battery and wifi right-aligned
-        batt = get_battery()
-        wifi = get_wifi_state()
+        # build status string
+        if self.state.sleeping:
+            status = "zz"
+        else:
+            parts = []
+            if get_wifi_state():
+                parts.append("W")
+            batt = get_battery()
+            if batt is not None:
+                parts.append(f"{batt}%")
+            status = "  ".join(parts)
 
-        status_parts = []
-        if wifi:
-            status_parts.append("W")
-        if batt is not None:
-            status_parts.append(f"{batt}%")
-
-        if status_parts:
-            fb.ui_text("  ".join(status_parts),
-                    top=20, left=490, right=5, size=10)
+        if status:
+            fb.ui_text(status, top=20, left=490, right=5, size=10)
 
     def _draw_widgets(self):
         fb.vline(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)

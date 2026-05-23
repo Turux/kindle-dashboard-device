@@ -2,6 +2,7 @@
 
 import sys
 import os
+import threading
 sys.path.insert(0, "/mnt/us/dashboard")
 
 from app.input.dpad import start as start_input
@@ -12,14 +13,32 @@ from app.screens.source import SourceScreen
 from app.screens.article import ArticleScreen
 from app.data.cache import sync_if_online, load_home
 
+def _sleep_watcher(state):
+    import subprocess
+    while True:
+        result = subprocess.run(
+            ["lipc-wait-event", "-s", "60",
+             "com.lab126.powerd",
+             "goingToScreenSaver,outOfScreenSaver"],
+            capture_output=True, text=True
+        )
+        if "goingToScreenSaver" in result.stdout:
+            state.sleeping = True
+        elif "outOfScreenSaver" in result.stdout:
+            state.sleeping = False
+
 def main():
     start_input()
     state = AppState()
 
+    # start sleep watcher thread
+    t = threading.Thread(target=_sleep_watcher, args=(state,), daemon=True)
+    t.start()
+
     fb.clear()
     fb.ui_text("Loading...", top=380, size=14, centered=True)
-    sync_if_online()          # tries wifi, silently skips if offline
-    state.data = load_home()  # falls back to dummy data if no cache yet
+    sync_if_online()
+    state.data = load_home()
 
     screens = {
         SCREEN_HOME:    HomeScreen(state),
@@ -32,7 +51,7 @@ def main():
         if current.full_render_needed:
             current.render()
             current.full_render_needed = False
-        else: 
+        else:
             current.partial_render()
         current.handle_input()
 

@@ -7,9 +7,10 @@ SCREEN_ARTICLE = "article"
 class AppState:
     def __init__(self):
         self.screen         = SCREEN_HOME
-        self.selected_index = 0      # headline index on current screen
-        self.source_index   = 0      # which source we're viewing
-        self.article_page   = 0      # current page in article view
-        self.article        = None   # full article text, paginated
-        self.prev_screen    = None   # for back navigation
-        self.data           = {}     # loaded from cache
+        self.selected_index = 0
+        self.source_index   = 0
+        self.article_page   = 0
+        self.article        = None
+        self.prev_screen    = None
+        self.data           = {}
+        self.sleeping       = False   # add this
