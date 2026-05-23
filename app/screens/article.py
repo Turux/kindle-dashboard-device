@@ -9,6 +9,7 @@ from app.state import SCREEN_HOME
 from app.data.cache import load_article
 import textwrap
 
+from app.display.layout import ARTICLE_BODY_SIZE, ARTICLE_TITLE_SIZE
 
 class ArticleScreen:
 
@@ -126,11 +127,10 @@ class ArticleScreen:
             title_lines = textwrap.wrap(self._title,
                                         width=ARTICLE_TITLE_CHARS)
             for line in title_lines:
-                fb.ui_text_norefresh(line,
-                        top=y,
-                        left=ARTICLE_MARGIN_LEFT,
-                        right=ARTICLE_MARGIN_RIGHT,
-                        size=16, bold=True)
+                fb.ui_text_norefresh(line, top=y,
+                     left=ARTICLE_MARGIN_LEFT,
+                     right=ARTICLE_MARGIN_RIGHT,
+                     size=ARTICLE_TITLE_SIZE, bold=True)
                 y += ARTICLE_TITLE_LINE_H
             y += ARTICLE_TITLE_GAP
         else:
@@ -140,11 +140,10 @@ class ArticleScreen:
             if line == "":
                 y += ARTICLE_LINE_HEIGHT
                 continue
-            fb.read_text_norefresh(line,
-                        top=y,
-                        left=ARTICLE_MARGIN_LEFT,
-                        right=ARTICLE_MARGIN_RIGHT,
-                        size=12)
+            fb.read_text_norefresh(line, top=y,
+                       left=ARTICLE_MARGIN_LEFT,
+                       right=ARTICLE_MARGIN_RIGHT,
+                       size=ARTICLE_BODY_SIZE)
             y += ARTICLE_LINE_HEIGHT
 
         # single refresh after everything is drawn

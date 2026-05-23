@@ -30,12 +30,24 @@ COL_WEATHER  = 0
 COL_F1       = 200
 COL_SAILGP   = 400
 
+# ── ui typography ─────────────────────────────────
+UI_FONT_REG  = "/usr/java/lib/fonts/Helvetica_LT_65_Medium.ttf"
+UI_FONT_BOLD = "/usr/java/lib/fonts/Helvetica_LT_75_Bold.ttf"
+
 # ── source view ───────────────────────────────────
 SOURCE_BAR_Y    = 0
 SOURCE_BAR_H    = 50
 SOURCE_ITEMS_Y  = 50
 SOURCE_ITEM_H   = 125   # 6 items × 125 = 750px
 SOURCE_UNDERLINE_OFFSET = 28  # px below title_top, tune if needed
+
+# ── article typography ────────────────────────────
+ARTICLE_BODY_SIZE      = 11
+ARTICLE_TITLE_SIZE     = 16
+ARTICLE_FONT_BODY_REG  = "/usr/java/lib/fonts/Caecilia_LT_65_Medium.ttf"
+ARTICLE_FONT_BODY_BOLD = "/usr/java/lib/fonts/Caecilia_LT_75_Bold.ttf"
+ARTICLE_FONT_UI_REG    = "/usr/java/lib/fonts/Helvetica_LT_65_Medium.ttf"
+ARTICLE_FONT_UI_BOLD   = "/usr/java/lib/fonts/Helvetica_LT_75_Bold.ttf"
 
 # ── article screen ────────────────────────────────
 ARTICLE_HEADER_H       = 60

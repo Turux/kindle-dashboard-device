@@ -6,11 +6,16 @@ import os
 FBINK_BIN = "/mnt/us/fbink/bin/fbink"
 FBINK_LIB = "/mnt/us/fbink/lib"
 
-# fonts
-FONT_UI_REGULAR = "/usr/java/lib/fonts/Helvetica_LT_65_Medium.ttf"
-FONT_UI_BOLD    = "/usr/java/lib/fonts/Helvetica_LT_75_Bold.ttf"
-FONT_READ_REG   = "/usr/java/lib/fonts/Caecilia_LT_65_Medium.ttf"
-FONT_READ_BOLD  = "/usr/java/lib/fonts/Caecilia_LT_75_Bold.ttf"
+from app.display.layout import (UI_FONT_REG, UI_FONT_BOLD,
+                                 ARTICLE_FONT_BODY_REG, ARTICLE_FONT_BODY_BOLD,
+                                 ARTICLE_BODY_SIZE, ARTICLE_TITLE_SIZE)
+
+# replace hardcoded paths
+FONT_UI_REGULAR = UI_FONT_REG
+FONT_UI_BOLD    = UI_FONT_BOLD
+FONT_READ_REG   = ARTICLE_FONT_BODY_REG
+FONT_READ_BOLD  = ARTICLE_FONT_BODY_BOLD
+
 
 env = os.environ.copy()
 env["LD_LIBRARY_PATH"] = FBINK_LIB
