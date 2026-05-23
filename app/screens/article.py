@@ -90,7 +90,7 @@ class ArticleScreen:
             pages.append(page)
             page_n += 1
 
-    return pages if pages else [[]]
+        return pages if pages else [[]]
 
     # ── sections ──────────────────────────────────
 
