@@ -88,7 +88,7 @@ class HomeScreen:
 
         fb.ui_text("F1",
                 top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(d.get("label", "---"),
+        fb.ui_text(fb.truncate(d.get("event", "---"), 16),
                 top=WIDGET_ROW_Y + 35, left=left, right=right, size=11)
         fb.ui_text(fb.truncate(d.get("name", "---"), 16),
                 top=WIDGET_ROW_Y + 60, left=left, right=right, size=14)
