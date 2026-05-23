@@ -63,10 +63,7 @@ class ArticleScreen:
                 wrapped = textwrap.wrap(para, width=ARTICLE_CHARS_PER_LINE)
                 lines.extend(wrapped)
 
-        # calculate how many body lines fit on page 1
-        # accounting for title height dynamically
-        title_lines  = len(textwrap.wrap(self._title,
-                                        width=ARTICLE_TITLE_CHARS))
+        title_lines  = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
         title_px     = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
         available_px = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
         page_1_lines = available_px // ARTICLE_LINE_HEIGHT
@@ -76,13 +73,24 @@ class ArticleScreen:
         page_n = 0
 
         while i < len(lines):
-            capacity = page_1_lines if page_n == 0 else ARTICLE_LINES_OTHER
-            page     = lines[i:i + capacity]
+            capacity   = page_1_lines if page_n == 0 else ARTICLE_LINES_OTHER
+            page       = []
+            body_count = 0   # only count non-blank lines
+
+            while i < len(lines) and body_count < capacity:
+                line = lines[i]
+                page.append(line)
+                if line.strip():
+                    body_count += 1   # only increment for real content
+                else:
+                    # blank line costs half
+                    body_count += 0.5
+                i += 1
+
             pages.append(page)
-            i      += capacity
             page_n += 1
 
-        return pages if pages else [[]]
+    return pages if pages else [[]]
 
     # ── sections ──────────────────────────────────
 
