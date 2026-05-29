@@ -5,6 +5,7 @@ A custom e-ink dashboard app for a jailbroken Kindle 4 Non-Touch (2011/2012), bu
 
 ## Companion repo
 The backend is at `https://github.com/Turux/kindle-dashboard-server` — a self-hosted Flask API + fetcher running on a Linux VPS via Docker Compose. The device syncs from it over HTTPS.
+The server repo is cloned locally in the same parent folder as this repo.
 
 ## Hardware facts
 - Screen: 600×800 e-ink, 167dpi, 16 grayscale levels
@@ -78,16 +79,22 @@ This kills the framework and launches `python3 app/main.py`
 Emergency exit: keyboard button → reboots device
 
 ## Open issues
-1. **Ghost underline** — 1px underline persists on first headline. E-ink refresh timing. Low priority.
-2. **Paragraph spacing** — articles lack breathing room between paragraphs (single \n not treated as break)
-3. **WiFi toggle** — add on/off toggle via app using `lipc-set-prop com.lab126.wifid enable 0/1`
-4. **Git on Kindle** — pre-compiled ARMv7 static binary for easier deployment
-5. **Boot automation** — auto-launch via KUAL autostart
-6. **KUAL extension not in repo** — extension files on device but not tracked in git
-7. **Symbol font** — no good symbol font available; [lock], stock arrows etc use ASCII fallbacks
-8. **America's Cup / Ocean Race widgets** — future addition, needs layout redesign for extra columns
+Tracked on GitHub: https://github.com/Turux/kindle-dashboard-device/issues
+
+Current open issues (as of May 2026):
+- **#1 Ghost underline** — 1px underline persists on first headline. E-ink refresh timing. Low priority.
+- **#4 WiFi toggle** — add on/off toggle via app using `lipc-set-prop com.lab126.wifid enable 0/1`
+- **#5 Git on Kindle** — pre-compiled ARMv7 static binary for easier deployment
+
+Not yet filed:
+- **Paragraph spacing** — articles lack breathing room between paragraphs (single \n not treated as break)
+- **Boot automation** — auto-launch via KUAL autostart
+- **Symbol font** — no good symbol font available; [lock], stock arrows etc use ASCII fallbacks
+- **America's Cup / Ocean Race widgets** — future addition, needs layout redesign for extra columns
 
 ## Recently fixed
+- Sports widget event name wrapping — switched to size 12 bold, prevents overflow in 180px column
+- KUAL launcher extension added to repo under `kual/` (config.xml, menu.json, start.sh, stop.sh, restart.sh)
 - Article pagination now correct (measured actual line heights)
 - Batch rendering — all text drawn with -b flag, single refresh at end
 - Article cache stability — server keeps 150 articles, Kindle keeps 100 for 7 days
