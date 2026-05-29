@@ -120,11 +120,11 @@ class HomeScreen:
 
         fb.ui_text("SailGP",
                 top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(d.get("label", "---"),
-                top=WIDGET_ROW_Y + 35, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("name", "---"), 16),
-                top=WIDGET_ROW_Y + 60, left=left, right=right, size=14)
-        fb.ui_text(d.get("date", "---"),
+        fb.ui_text(fb.truncate(d.get("name", "---"), 16),  # "New York SGP"
+                top=WIDGET_ROW_Y + 35, left=left, right=right, size=14)
+        fb.ui_text(d.get("label", "---"),                   # "Race Day 1"
+                top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
+        fb.ui_text(d.get("date", "---"),                    # "Sat 30 May"
                 top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_stocks(self):
