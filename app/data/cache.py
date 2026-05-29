@@ -76,12 +76,14 @@ def _write_cache(payload):
         with open(path, "w") as f:
             json.dump(items, f)
 
-    # pre-cached articles — only add, never delete
+    # pre-cached articles — write new, touch existing so cleanup keeps referenced ones
     for url_hash, text in payload.get("articles", {}).items():
         path = f"{CACHE_DIR}/articles/{url_hash}.txt"
-        if not os.path.exists(path):   # don't overwrite existing
+        if not os.path.exists(path):
             with open(path, "w") as f:
                 f.write(text)
+        else:
+            os.utime(path, None)
 
     # metadata — when we last synced
     with open(META_FILE, "w") as f:
