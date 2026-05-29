@@ -1,7 +1,7 @@
 # app/data/cache.py
 
 import json, os, time, hashlib, ssl, urllib.request
-from app.config import VM_ENDPOINT
+from app.config import VM_ENDPOINT, WEATHER_LAT, WEATHER_LON
 import subprocess
 
 def get_battery():
@@ -46,12 +46,13 @@ def sync_if_online():
     if not is_wifi_on():
         return False
     try:
-        # create unverified context — Kindle lacks modern CA certs
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
-        
-        with urllib.request.urlopen(VM_ENDPOINT, timeout=15, 
+
+        url = f"{VM_ENDPOINT}?lat={WEATHER_LAT}&lon={WEATHER_LON}"
+
+        with urllib.request.urlopen(url, timeout=15,
                                     context=ctx) as r:
             payload = json.loads(r.read())
         _write_cache(payload)
