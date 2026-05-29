@@ -60,10 +60,14 @@ class ArticleScreen:
         lines = []
         for para in paragraphs:
             if para.strip() == "":
-                lines.append("")
+                if lines and lines[-1] != "":
+                    lines.append("")
             else:
                 wrapped = textwrap.wrap(para, width=ARTICLE_CHARS_PER_LINE)
                 lines.extend(wrapped)
+                lines.append("")  # breathing room after each paragraph
+        while lines and lines[-1] == "":
+            lines.pop()
 
         title_lines  = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
         title_px     = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
