@@ -5,6 +5,7 @@ from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_UP, KEY_DOWN, KEY_SELECT,
                              KEY_BACK, KEY_HOME,
+                             KEY_SLEEP, KEY_WAKE,
                              is_page_forward, is_page_backward)
 from app.state import SCREEN_HOME, SCREEN_ARTICLE
 from app.data.cache import load_source
@@ -165,3 +166,6 @@ class SourceScreen:
             self.state.selected_index = 0
             self.state.screen         = SCREEN_HOME
             self.full_render_needed   = True
+        
+        elif key in (KEY_SLEEP, KEY_WAKE):
+            self.full_render_needed = True

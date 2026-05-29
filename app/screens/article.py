@@ -4,6 +4,7 @@ from app.display import fbink_wrapper as fb
 from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_BACK, KEY_HOME,
+                             KEY_SLEEP, KEY_WAKE,
                              is_page_forward, is_page_backward)
 from app.state import SCREEN_HOME
 from app.data.cache import load_article
@@ -168,4 +169,7 @@ class ArticleScreen:
         elif key in (KEY_BACK, KEY_HOME):
             self.state.article_page = 0
             self.state.screen       = self.state.prev_screen or SCREEN_HOME
+            self.full_render_needed = True
+        
+        elif key in (KEY_SLEEP, KEY_WAKE):
             self.full_render_needed = True
