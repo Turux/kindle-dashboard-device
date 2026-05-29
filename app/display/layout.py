@@ -59,6 +59,7 @@ ARTICLE_CHARS_PER_LINE = 56
 ARTICLE_LINES_PAGE_1   = 18
 ARTICLE_LINES_OTHER    = (SCREEN_H - ARTICLE_MARGIN_TOP) // ARTICLE_LINE_HEIGHT
 ARTICLE_TITLE_GAP      = 14   # gap between title block and body
+ARTICLE_PARAGRAPH_GAP  = 13   # blank line height between paragraphs (~half a body line)
 ARTICLE_TITLE_CHARS    = 35
 ARTICLE_TITLE_LINE_H   = 37
 

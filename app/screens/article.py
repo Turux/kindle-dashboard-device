@@ -83,10 +83,9 @@ class ArticleScreen:
                 line = lines[i]
                 page.append(line)
                 if line.strip():
-                    body_count += 1   # only increment for real content
+                    body_count += 1
                 else:
-                    # blank line costs half
-                    body_count += 0.5
+                    body_count += ARTICLE_PARAGRAPH_GAP / ARTICLE_LINE_HEIGHT
                 i += 1
 
             pages.append(page)
@@ -139,7 +138,7 @@ class ArticleScreen:
 
         for line in lines:
             if line == "":
-                y += ARTICLE_LINE_HEIGHT
+                y += ARTICLE_PARAGRAPH_GAP
                 continue
             fb.read_text_norefresh(line, top=y,
                        left=ARTICLE_MARGIN_LEFT,
