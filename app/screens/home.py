@@ -106,10 +106,10 @@ class HomeScreen:
 
         fb.ui_text("F1",
                 top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("event", "---"), 16),
-                top=WIDGET_ROW_Y + 35, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("name", "---"), 16),
-                top=WIDGET_ROW_Y + 60, left=left, right=right, size=14)
+        fb.ui_text(fb.truncate(d.get("event", "---"), 16),  # "Canada GP" — bigger
+                top=WIDGET_ROW_Y + 35, left=left, right=right, size=14)
+        fb.ui_text(fb.truncate(d.get("name", "---"), 16),   # "Practice 1" — smaller
+                top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
         fb.ui_text(d.get("date", "---"),
                 top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
