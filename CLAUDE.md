@@ -87,12 +87,12 @@ Current open issues (as of May 2026):
 - **#5 Git on Kindle** — pre-compiled ARMv7 static binary for easier deployment
 
 Not yet filed:
-- **Paragraph spacing** — articles lack breathing room between paragraphs (single \n not treated as break)
 - **Boot automation** — auto-launch via KUAL autostart
 - **Symbol font** — no good symbol font available; [lock], stock arrows etc use ASCII fallbacks
 - **America's Cup / Ocean Race widgets** — future addition, needs layout redesign for extra columns
 
 ## Recently fixed
+- Paragraph spacing in article reader — each paragraph now gets breathing room via blank line insertion in paginator
 - Sports widget event name wrapping — switched to size 12 bold, prevents overflow in 180px column
 - KUAL launcher extension added to repo under `kual/` (config.xml, menu.json, start.sh, stop.sh, restart.sh)
 - Article pagination now correct (measured actual line heights)
