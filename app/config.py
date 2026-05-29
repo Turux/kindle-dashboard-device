@@ -4,10 +4,10 @@
 SOURCES = [
     "guardian",
     "the_nerve",
-    "ft",
     "semafor",
     "the_dial",
     "bellingcat",
+    "the_conversation"
 ]
 
 # ── display names ─────────────────────────────────
@@ -18,6 +18,7 @@ SOURCE_NAMES = {
     "semafor":    "Semafor",
     "the_dial":   "The Dial",
     "bellingcat": "Bellingcat",
+    "the_conversation": "The Conversation",
 }
 
 # ── cache settings ────────────────────────────────
