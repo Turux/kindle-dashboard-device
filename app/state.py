@@ -13,4 +13,5 @@ class AppState:
         self.article        = None
         self.prev_screen    = None
         self.data           = {}
-        self.sleeping       = False   # add this
+        self.sleeping       = False
+        self.needs_refresh  = False
