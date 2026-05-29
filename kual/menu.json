@@ -11,6 +11,12 @@
                     "refresh": false
                 },
                 {
+                    "name": "Restart Dashboard",
+                    "action": "sh /mnt/us/extensions/dashboard/restart.sh",
+                    "exitmenu": true,
+                    "refresh": false
+                },
+                {
                     "name": "Stop Dashboard",
                     "action": "sh /mnt/us/extensions/dashboard/stop.sh",
                     "exitmenu": true,
