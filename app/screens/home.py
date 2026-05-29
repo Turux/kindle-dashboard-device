@@ -4,7 +4,8 @@ from app.display import fbink_wrapper as fb
 from app.display.layout import *
 from app.input.dpad import (wait_for_key,
                              KEY_UP, KEY_DOWN, KEY_SELECT,
-                             KEY_BACK, KEY_HOME, KEY_MENU, KEY_KEYBOARD, KEY_SLEEP, KEY_WAKE,
+                             KEY_BACK, KEY_HOME, KEY_MENU, KEY_KEYBOARD,
+                             KEY_SLEEP, KEY_WAKE,
                              is_page_forward, is_page_backward)
 from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
@@ -63,9 +64,8 @@ class HomeScreen:
         fb.ui_text(date_str, top=15, left=10, right=10,
                 size=16, bold=True, centered=True)
 
-        # build status string
         if self.state.sleeping:
-            status = "zz"
+            fb.ui_text("[lock]", top=20, left=490, right=5, size=10)
         else:
             parts = []
             if get_wifi_state():
@@ -73,10 +73,9 @@ class HomeScreen:
             batt = get_battery()
             if batt is not None:
                 parts.append(f"{batt}%")
-            status = "  ".join(parts)
-
-        if status:
-            fb.ui_text(status, top=20, left=490, right=5, size=10)
+            if parts:
+                fb.ui_text("  ".join(parts),
+                        top=20, left=490, right=5, size=10)
 
     def _draw_widgets(self):
         fb.vline(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
@@ -240,10 +239,10 @@ class HomeScreen:
             subprocess.run(["reboot"])
 
         elif key == KEY_SLEEP:
-            self.full_render_needed = True   # redraw with zzz
+            self.full_render_needed = True   # redraw with lock indicator
 
         elif key == KEY_WAKE:
-            self.full_render_needed = True   # redraw without zzz
+            self.full_render_needed = True   # redraw without lock indicator
 
         elif is_page_forward(key) or is_page_backward(key):
             self.state.source_index   = 0
