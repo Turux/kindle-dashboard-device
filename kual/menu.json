@@ -1,0 +1,22 @@
+{
+    "items": [
+        {
+            "name": "Dashboard",
+            "priority": -1,
+            "items": [
+                {
+                    "name": "Start Dashboard",
+                    "action": "sh /mnt/us/extensions/dashboard/start.sh",
+                    "exitmenu": true,
+                    "refresh": false
+                },
+                {
+                    "name": "Stop Dashboard",
+                    "action": "sh /mnt/us/extensions/dashboard/stop.sh",
+                    "exitmenu": true,
+                    "refresh": false
+                }
+            ]
+        }
+    ]
+}
