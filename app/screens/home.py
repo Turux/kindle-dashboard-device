@@ -10,6 +10,7 @@ from app.input.dpad import (wait_for_key,
 from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
 from datetime import datetime
+from app.config import WEATHER_CITY
 
 
 class HomeScreen:
@@ -89,7 +90,7 @@ class HomeScreen:
         left  = COL_WEATHER + 10
         right = SCREEN_W - WIDGET_W + 10   # clamp text to weather column
 
-        fb.ui_text("London",
+        fb.ui_text(WEATHER_CITY,
                    top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
         fb.ui_text(d.get("temp", "--°"),
                    top=WIDGET_ROW_Y + 35, left=left, right=right, size=28)

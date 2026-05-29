@@ -27,8 +27,9 @@ MAX_HEADLINES_SOURCE = 6
 
 # ── location ──────────────────────────────────────
 # Used for weather — update to your actual coordinates
-WEATHER_LAT = 51.5074   # London default
-WEATHER_LON = -0.1278
+WEATHER_CITY = "Leicester"
+WEATHER_LAT = 52.61457
+WEATHER_LON = -1.12390
 
 # ── VM endpoint ───────────────────────────────────
 VM_ENDPOINT = "https://kindle.turux.co.uk/api/full-sync"
