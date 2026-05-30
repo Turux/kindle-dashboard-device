@@ -26,8 +26,8 @@ def _sleep_watcher(state):
         )
 
         if "goingToScreenSaver" in result.stdout:
-            state.sleeping = True
-            # navigate home from wherever we are
+            state.resume_screen  = state.screen   # save position before going home
+            state.sleeping       = True
             state.screen         = SCREEN_HOME
             state.selected_index = 0
             inject_event(KEY_SLEEP)
@@ -40,7 +40,10 @@ def _sleep_watcher(state):
                 threading.Thread(target=bg_sync, daemon=True).start()
 
         elif "outOfScreenSaver" in result.stdout:
-            state.sleeping      = False
+            state.sleeping = False
+            if state.resume_screen:
+                state.screen        = state.resume_screen
+                state.resume_screen = None
             state.needs_refresh = True
             inject_event(KEY_WAKE)
 

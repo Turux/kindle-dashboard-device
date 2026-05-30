@@ -15,3 +15,4 @@ class AppState:
         self.data           = {}
         self.sleeping       = False
         self.needs_refresh  = False
+        self.resume_screen  = None
