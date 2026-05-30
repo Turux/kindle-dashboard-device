@@ -26,11 +26,11 @@ class ArticleScreen:
 
     def render(self, flash=True):
         self._prepare()
-        fb.clear()
         if flash:
             fb.flash()
+        fb.clear_norefresh()
         self._draw_header()
-        fb.hline(ARTICLE_HEADER_H)
+        fb.hline_norefresh(ARTICLE_HEADER_H)
         self._draw_page()
 
     def partial_render(self):
@@ -120,12 +120,12 @@ class ArticleScreen:
         if date:
             source_str += f"  {date}"
 
-        fb.ui_text(source_str,
+        fb.ui_text_norefresh(source_str,
                 top=ARTICLE_HEADER_H // 2 - 8,
                 left=10, right=120,
                 size=12, bold=True)
 
-        fb.ui_text(f"{page + 1} of {total}",
+        fb.ui_text_norefresh(f"{page + 1} of {total}",
                 top=ARTICLE_HEADER_H // 2 - 8,
                 left=460, right=10, size=11)
 

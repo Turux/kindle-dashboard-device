@@ -29,6 +29,10 @@ def _run(args):
 def clear():
     _run(["-k"])
 
+def clear_norefresh():
+    """Fill screen white without triggering e-ink refresh"""
+    _run(["-b", "-k", "-B", "WHITE"])
+
 def cls_region(top, left, width, height, flash=False):
     """Clear a region to white"""
     args = ["-k",
@@ -109,6 +113,15 @@ def hline(y, x_start=0, x_end=600, thickness=1):
     """Draw a horizontal line in black"""
     _run([
         "-k",
+        f"top={y},left={x_start},"
+        f"width={x_end - x_start},height={thickness}",
+        "-B", "BLACK"
+    ])
+
+def hline_norefresh(y, x_start=0, x_end=600, thickness=1):
+    """Draw a horizontal line without triggering e-ink refresh"""
+    _run([
+        "-b", "-k",
         f"top={y},left={x_start},"
         f"width={x_end - x_start},height={thickness}",
         "-B", "BLACK"
