@@ -32,6 +32,8 @@ class HomeScreen:
         self._draw_stocks()
         self._draw_headlines()
         self._prev_selected = self.state.selected_index
+        fb.hline(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
+                x_start=10, x_end=150, thickness=3)
 
     def _item_title_top(self, i):
         """Single source of truth for title Y position of headline i"""
@@ -159,7 +161,6 @@ class HomeScreen:
 
     def _draw_headlines(self):
         headlines = self.state.data.get("headlines", [])
-        selected  = self.state.selected_index
 
         for i in range(min(4, len(headlines))):
             h           = headlines[i]
@@ -175,11 +176,6 @@ class HomeScreen:
             fb.ui_text(title,
                     top=y + 28, left=WIDGET_PADDING,
                     right=10, size=13)
-
-            # selection underline
-            if i == selected:
-                fb.hline(self._item_title_top(i) + SOURCE_UNDERLINE_OFFSET,
-                        x_start=10, x_end=150, thickness=3)
 
             # summary — only if there's room
             summary = h.get("summary", "")

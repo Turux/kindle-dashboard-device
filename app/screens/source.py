@@ -23,13 +23,16 @@ class SourceScreen:
     # ── main render ───────────────────────────────
 
     def render(self):
-        self._headlines   = load_source(SOURCES[self.state.source_index])
-        self._prev_selected = 0    # reset on full render
+        self._headlines = load_source(SOURCES[self.state.source_index])
         fb.clear()
         fb.flash()
         self._draw_header()
         fb.hline(SOURCE_BAR_H)
         self._draw_headlines()
+        if self._headlines:
+            fb.hline(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
+                    x_start=10, x_end=150, thickness=3)
+        self._prev_selected = self.state.selected_index
 
     def partial_render(self):
         prev = self._prev_selected
@@ -77,7 +80,6 @@ class SourceScreen:
 
     def _draw_headlines(self):
         headlines = self._headlines
-        selected  = self.state.selected_index
         count     = min(MAX_HEADLINES_SOURCE, len(headlines))
 
         if not headlines:
@@ -106,11 +108,6 @@ class SourceScreen:
             fb.ui_text(title,
                     top=title_top,
                     left=10, right=10, size=13)
-
-            # underline selected item
-            if i == selected:
-                fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
-                    x_start=10, x_end=150, thickness=3)
 
             # summary
             summary = h.get("summary", "")
