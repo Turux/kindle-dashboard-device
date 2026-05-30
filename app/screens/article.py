@@ -69,30 +69,34 @@ class ArticleScreen:
         while lines and lines[-1] == "":
             lines.pop()
 
-        title_lines  = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
-        title_px     = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
-        available_px = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
-        page_1_lines = available_px // ARTICLE_LINE_HEIGHT
+        title_lines = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
+        title_px    = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
+        page_1_cap  = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
+        other_cap   = SCREEN_H - ARTICLE_MARGIN_TOP
 
         pages  = []
         i      = 0
         page_n = 0
 
         while i < len(lines):
-            capacity   = page_1_lines if page_n == 0 else ARTICLE_LINES_OTHER
-            page       = []
-            body_count = 0   # only count non-blank lines
+            cap     = page_1_cap if page_n == 0 else other_cap
+            page    = []
+            px_used = 0
 
-            while i < len(lines) and body_count < capacity:
+            while i < len(lines):
                 line = lines[i]
+                if not page and not line.strip():  # skip leading blank at page start
+                    i += 1
+                    continue
+                cost = ARTICLE_LINE_HEIGHT if line.strip() else ARTICLE_PARAGRAPH_GAP
+                if px_used + cost > cap:
+                    break
                 page.append(line)
-                if line.strip():
-                    body_count += 1
-                else:
-                    body_count += ARTICLE_PARAGRAPH_GAP / ARTICLE_LINE_HEIGHT
+                px_used += cost
                 i += 1
 
-            pages.append(page)
+            if page:
+                pages.append(page)
             page_n += 1
 
         return pages if pages else [[]]
