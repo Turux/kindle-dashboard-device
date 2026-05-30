@@ -11,6 +11,10 @@ from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
 from datetime import datetime
 from app.config import WEATHER_CITY
+from app.display.layout import (ICON_LOCK, ICON_WIFI,
+                                 ICON_STOCK_UP, ICON_STOCK_DOWN,
+                                 ICON_BATT_FULL, ICON_BATT_3Q,
+                                 ICON_BATT_HALF, ICON_BATT_1Q, ICON_BATT_EMPTY)
 
 
 class HomeScreen:
@@ -70,17 +74,21 @@ class HomeScreen:
                 size=16, bold=True, centered=True)
 
         if self.state.sleeping:
-            fb.ui_text_norefresh("[lock]", top=20, left=490, right=5, size=10)
+            fb.symbol_norefresh(ICON_LOCK, top=18, left=492, right=5, size=11)
         else:
-            parts = []
+            x = 470
             if get_wifi_state():
-                parts.append("W")
+                fb.symbol_norefresh(ICON_WIFI, top=20, left=x, right=5, size=8)
+                x += 30
             batt = get_battery()
             if batt is not None:
-                parts.append(f"{batt}%")
-            if parts:
-                fb.ui_text_norefresh("  ".join(parts),
-                        top=20, left=490, right=5, size=10)
+                icon = (ICON_BATT_FULL  if batt >= 75 else
+                        ICON_BATT_3Q    if batt >= 50 else
+                        ICON_BATT_HALF  if batt >= 25 else
+                        ICON_BATT_1Q    if batt >= 10 else
+                        ICON_BATT_EMPTY)
+                fb.symbol_norefresh(icon, top=20, left=x, right=5, size=8)
+                fb.ui_text_norefresh(f"{batt}%", top=17, left=x + 30, right=5, size=10)
 
     def _draw_widgets(self):
         fb.vline_norefresh(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
@@ -139,7 +147,7 @@ class HomeScreen:
         slot_w = SCREEN_W // len(stocks)
 
         for i, s in enumerate(stocks):
-            arrow      = "+" if s.get("change", 0) >= 0 else "-"
+            icon       = ICON_STOCK_UP if s.get("change", 0) >= 0 else ICON_STOCK_DOWN
             slot_left  = i * slot_w
             slot_right = SCREEN_W - (i + 1) * slot_w
 
@@ -155,9 +163,14 @@ class HomeScreen:
                     right=slot_right + STOCK_PADDING,
                     size=11, bold=True)
 
-            fb.ui_text_norefresh(f"{arrow}{s['pct']}%",
+            fb.symbol_norefresh(icon,
                     top=STOCK_BAR_Y + STOCK_CHANGE_Y,
                     left=slot_left + STOCK_PADDING,
+                    right=slot_right + STOCK_PADDING,
+                    size=8)
+            fb.ui_text_norefresh(f"{s['pct']}%",
+                    top=STOCK_BAR_Y + STOCK_CHANGE_Y,
+                    left=slot_left + STOCK_PADDING + 18,
                     right=slot_right + STOCK_PADDING,
                     size=10)
 

@@ -96,6 +96,15 @@ def ui_text_norefresh(string, top, left=10, right=10, size=12,
     args += ["--", string]
     _run(args)
 
+def symbol_norefresh(char, top, left=10, right=10, size=12):
+    """Font Awesome glyph — draw without triggering e-ink refresh"""
+    from app.display.layout import SYMBOL_FONT
+    font_str = (f"regular={SYMBOL_FONT},bold={SYMBOL_FONT},"
+                f"size={size},top={top},left={left},"
+                f"right={right},style=REGULAR")
+    args = ["-b", "-t", font_str, "--", char]
+    _run(args)
+
 def read_text_norefresh(string, top, left=10, right=10, size=12):
     """Caecilia — draw without triggering e-ink refresh"""
     font_str = (f"regular={FONT_READ_REG},bold={FONT_READ_BOLD},"

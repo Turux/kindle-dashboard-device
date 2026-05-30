@@ -10,7 +10,7 @@ DATE_BAR_H      = 60
 
 WIDGET_ROW_Y    = DATE_BAR_H
 WIDGET_ROW_H    = 180
-WIDGET_W        = SCREEN_W // 3 
+WIDGET_W        = SCREEN_W // 3
 WIDGET_PADDING = 8   # inner padding for all widgets
 
 STOCK_BAR_Y        = WIDGET_ROW_Y + WIDGET_ROW_H
@@ -21,9 +21,9 @@ STOCK_PRICE_Y      = 30   # relative to STOCK_BAR_Y
 STOCK_CHANGE_Y     = 54   # relative to STOCK_BAR_Y — more space after price
 
 
-HEADLINES_Y        = STOCK_BAR_Y + STOCK_BAR_H 
-HEADLINES_H        = SCREEN_H - HEADLINES_Y 
-HEADLINE_ITEM_H    = HEADLINES_H // 4 
+HEADLINES_Y        = STOCK_BAR_Y + STOCK_BAR_H
+HEADLINES_H        = SCREEN_H - HEADLINES_Y
+HEADLINE_ITEM_H    = HEADLINES_H // 4
 
 # ── widget columns ────────────────────────────────
 COL_WEATHER  = 0
@@ -33,6 +33,18 @@ COL_SAILGP   = 400
 # ── ui typography ─────────────────────────────────
 UI_FONT_REG  = "/usr/java/lib/fonts/Helvetica_LT_65_Medium.ttf"
 UI_FONT_BOLD = "/usr/java/lib/fonts/Helvetica_LT_75_Bold.ttf"
+
+# ── symbol font (Font Awesome 7 Free Solid) ────────
+SYMBOL_FONT     = "/mnt/us/dashboard/fonts/fa-solid.ttf"
+ICON_LOCK       = ""  # fa-lock
+ICON_WIFI       = ""  # fa-wifi
+ICON_STOCK_UP   = ""  # fa-arrow-up
+ICON_STOCK_DOWN = ""  # fa-arrow-down
+ICON_BATT_FULL  = ""  # fa-battery-full
+ICON_BATT_3Q    = ""  # fa-battery-three-quarters
+ICON_BATT_HALF  = ""  # fa-battery-half
+ICON_BATT_1Q    = ""  # fa-battery-quarter
+ICON_BATT_EMPTY = ""  # fa-battery-empty
 
 # ── source view ───────────────────────────────────
 SOURCE_BAR_Y    = 0
@@ -68,7 +80,7 @@ SIZE_SMALL  = "1"
 SIZE_MEDIUM = "2"
 SIZE_LARGE  = "3"
 CHARS_SIZE_11 = 58   # small UI text
-CHARS_SIZE_13 = 48   # headline text  
+CHARS_SIZE_13 = 48   # headline text
 CHARS_SIZE_14 = 44   # medium UI text
 
 # ── divider ───────────────────────────────────────
