@@ -178,7 +178,7 @@ class HomeScreen:
 
             # selection underline
             if i == selected:
-                fb.hline(y + 28 + SOURCE_UNDERLINE_OFFSET,
+                fb.hline(self._item_title_top(i) + SOURCE_UNDERLINE_OFFSET,
                         x_start=10, x_end=150, thickness=3)
 
             # summary — only if there's room
