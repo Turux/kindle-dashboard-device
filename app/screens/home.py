@@ -29,6 +29,7 @@ class HomeScreen:
         self._draw_widgets()
         fb.hline_norefresh(WIDGET_ROW_Y + WIDGET_ROW_H)
         self._draw_stocks()
+        fb.hline_norefresh(HEADLINES_Y)
         self._draw_headlines()
         self._prev_selected = self.state.selected_index
         fb.hline_norefresh(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
