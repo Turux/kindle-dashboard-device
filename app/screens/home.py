@@ -232,7 +232,7 @@ class HomeScreen:
         elif key == KEY_KEYBOARD:
             import subprocess
             import time
-            fb.clear()
+            fb.flash()
             fb.ui_text("Rebooting...", top=380, size=14, centered=True)
             time.sleep(1)
             subprocess.run(["reboot"])
