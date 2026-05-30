@@ -24,32 +24,31 @@ class SourceScreen:
 
     def render(self):
         self._headlines = load_source(SOURCES[self.state.source_index])
-        fb.clear()
         fb.flash()
         self._draw_header()
-        fb.hline(SOURCE_BAR_H)
+        fb.hline_norefresh(SOURCE_BAR_H)
         self._draw_headlines()
         if self._headlines:
-            fb.hline(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
+            fb.hline_norefresh(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
                     x_start=10, x_end=150, thickness=3)
         self._prev_selected = self.state.selected_index
+        fb.refresh_screen()
 
     def partial_render(self):
         prev = self._prev_selected
         cur  = self.state.selected_index
 
         if prev is not None and prev != cur:
-            # erase old underline — 3px tall to be safe
             title_top = self._item_title_top(prev)
             fb.cls_region(
                 top=title_top + SOURCE_UNDERLINE_OFFSET,
-                left=10, width=140, height=3)
+                left=10, width=140, height=3, norefresh=True)
 
-        # draw new underline
         title_top = self._item_title_top(cur)
-        fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+        fb.hline_norefresh(title_top + SOURCE_UNDERLINE_OFFSET,
                 x_start=10, x_end=150, thickness=3)
 
+        fb.refresh_screen()
         self._prev_selected = cur
 
     # ── sections ──────────────────────────────────
@@ -66,14 +65,12 @@ class SourceScreen:
         total       = len(SOURCES)
         position    = self.state.source_index + 1
 
-        # source name on the left
-        fb.ui_text(name,
+        fb.ui_text_norefresh(name,
                    top=SOURCE_BAR_H // 2 - 8,
                    left=10, right=120,
                    size=13, bold=True)
 
-        # position indicator on the right  e.g. "2 of 6"
-        fb.ui_text(f"{position} of {total}",
+        fb.ui_text_norefresh(f"{position} of {total}",
                    top=SOURCE_BAR_H // 2 - 8,
                    left=460, right=10,
                    size=11)
@@ -83,10 +80,10 @@ class SourceScreen:
         count     = min(MAX_HEADLINES_SOURCE, len(headlines))
 
         if not headlines:
-            fb.ui_text("No articles cached.",
+            fb.ui_text_norefresh("No articles cached.",
                     top=SOURCE_BAR_H + 40,
                     left=10, right=10, size=12)
-            fb.ui_text("Press Menu to sync.",
+            fb.ui_text_norefresh("Press Menu to sync.",
                     top=SOURCE_BAR_H + 70,
                     left=10, right=10, size=12)
             return
@@ -96,23 +93,20 @@ class SourceScreen:
             y         = SOURCE_ITEMS_Y + (i * SOURCE_ITEM_H)
             title_top = self._item_title_top(i)
 
-            # date
             date_str = h.get("date", "")
             if date_str:
-                fb.ui_text(date_str,
+                fb.ui_text_norefresh(date_str,
                         top=y + 6,
                         left=10, right=10, size=10)
 
-            # title
             title = fb.truncate(h.get("title", ""), 52)
-            fb.ui_text(title,
+            fb.ui_text_norefresh(title,
                     top=title_top,
                     left=10, right=10, size=13)
 
-            # summary
             summary = h.get("summary", "")
             if summary:
-                fb.ui_text(fb.truncate(summary, 80),
+                fb.ui_text_norefresh(fb.truncate(summary, 80),
                         top=y + 62,
                         left=10, right=10, size=10)
 

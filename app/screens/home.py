@@ -23,17 +23,17 @@ class HomeScreen:
     # ── main render ───────────────────────────────
 
     def render(self):
-        fb.clear()
         fb.flash()
         self._draw_date_bar()
-        fb.hline(DATE_BAR_H)
+        fb.hline_norefresh(DATE_BAR_H)
         self._draw_widgets()
-        fb.hline(WIDGET_ROW_Y + WIDGET_ROW_H)
+        fb.hline_norefresh(WIDGET_ROW_Y + WIDGET_ROW_H)
         self._draw_stocks()
         self._draw_headlines()
         self._prev_selected = self.state.selected_index
-        fb.hline(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
+        fb.hline_norefresh(self._item_title_top(self.state.selected_index) + SOURCE_UNDERLINE_OFFSET,
                 x_start=10, x_end=150, thickness=3)
+        fb.refresh_screen()
 
     def _item_title_top(self, i):
         """Single source of truth for title Y position of headline i"""
@@ -48,12 +48,13 @@ class HomeScreen:
             title_top = self._item_title_top(prev)
             fb.cls_region(
                 top=title_top + SOURCE_UNDERLINE_OFFSET,
-                left=10, width=140, height=3)
+                left=10, width=140, height=3, norefresh=True)
 
         title_top = self._item_title_top(cur)
-        fb.hline(title_top + SOURCE_UNDERLINE_OFFSET,
+        fb.hline_norefresh(title_top + SOURCE_UNDERLINE_OFFSET,
                 x_start=10, x_end=150, thickness=3)
 
+        fb.refresh_screen()
         self._prev_selected = cur
 
     # ── sections ──────────────────────────────────
@@ -64,11 +65,11 @@ class HomeScreen:
         from app.data.cache import get_battery, get_wifi_state
         now      = datetime.now()
         date_str = now.strftime("%A  %d %B %Y")
-        fb.ui_text(date_str, top=15, left=10, right=10,
+        fb.ui_text_norefresh(date_str, top=15, left=10, right=10,
                 size=16, bold=True, centered=True)
 
         if self.state.sleeping:
-            fb.ui_text("[lock]", top=20, left=490, right=5, size=10)
+            fb.ui_text_norefresh("[lock]", top=20, left=490, right=5, size=10)
         else:
             parts = []
             if get_wifi_state():
@@ -77,12 +78,12 @@ class HomeScreen:
             if batt is not None:
                 parts.append(f"{batt}%")
             if parts:
-                fb.ui_text("  ".join(parts),
+                fb.ui_text_norefresh("  ".join(parts),
                         top=20, left=490, right=5, size=10)
 
     def _draw_widgets(self):
-        fb.vline(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
-        fb.vline(WIDGET_W * 2, WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
+        fb.vline_norefresh(WIDGET_W,     WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
+        fb.vline_norefresh(WIDGET_W * 2, WIDGET_ROW_Y, WIDGET_ROW_Y + WIDGET_ROW_H)
         self._draw_weather()
         self._draw_f1()
         self._draw_sailgp()
@@ -92,13 +93,13 @@ class HomeScreen:
         left  = COL_WEATHER + 10
         right = SCREEN_W - WIDGET_W + 10   # clamp text to weather column
 
-        fb.ui_text(WEATHER_CITY,
+        fb.ui_text_norefresh(WEATHER_CITY,
                    top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(d.get("temp", "--°"),
+        fb.ui_text_norefresh(d.get("temp", "--°"),
                    top=WIDGET_ROW_Y + 35, left=left, right=right, size=28)
-        fb.ui_text(d.get("desc", "---"),
+        fb.ui_text_norefresh(d.get("desc", "---"),
                    top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
-        fb.ui_text(d.get("rain", ""),
+        fb.ui_text_norefresh(d.get("rain", ""),
                    top=WIDGET_ROW_Y + 135, left=left, right=right, size=11)
 
     def _draw_f1(self):
@@ -106,13 +107,13 @@ class HomeScreen:
         left = COL_F1 + 10
         right = SCREEN_W - COL_F1 - WIDGET_W + 10
 
-        fb.ui_text("F1",
+        fb.ui_text_norefresh("F1",
                 top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("event", "---"), 16),  # "Canada GP"
+        fb.ui_text_norefresh(fb.truncate(d.get("event", "---"), 16),
                 top=WIDGET_ROW_Y + 35, left=left, right=right, size=12, bold=True)
-        fb.ui_text(fb.truncate(d.get("name", "---"), 16),   # "Practice 1" — smaller
+        fb.ui_text_norefresh(fb.truncate(d.get("name", "---"), 16),
                 top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
-        fb.ui_text(d.get("date", "---"),
+        fb.ui_text_norefresh(d.get("date", "---"),
                 top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_sailgp(self):
@@ -120,13 +121,13 @@ class HomeScreen:
         left = COL_SAILGP + 10
         right = 10
 
-        fb.ui_text("SailGP",
+        fb.ui_text_norefresh("SailGP",
                 top=WIDGET_ROW_Y + 10, left=left, right=right, size=11)
-        fb.ui_text(fb.truncate(d.get("name", "---"), 16),  # "New York SGP"
+        fb.ui_text_norefresh(fb.truncate(d.get("name", "---"), 16),
                 top=WIDGET_ROW_Y + 35, left=left, right=right, size=12, bold=True)
-        fb.ui_text(d.get("label", "---"),                   # "Race Day 1"
+        fb.ui_text_norefresh(d.get("label", "---"),
                 top=WIDGET_ROW_Y + 75, left=left, right=right, size=11)
-        fb.ui_text(d.get("date", "---"),                    # "Sat 30 May"
+        fb.ui_text_norefresh(d.get("date", "---"),
                 top=WIDGET_ROW_Y + 100, left=left, right=right, size=11)
 
     def _draw_stocks(self):
@@ -141,19 +142,19 @@ class HomeScreen:
             slot_left  = i * slot_w
             slot_right = SCREEN_W - (i + 1) * slot_w
 
-            fb.ui_text(s['ticker'],
+            fb.ui_text_norefresh(s['ticker'],
                     top=STOCK_BAR_Y + STOCK_TICKER_Y,
                     left=slot_left + STOCK_PADDING,
                     right=slot_right + STOCK_PADDING,
                     size=10)
 
-            fb.ui_text(s['price'],
+            fb.ui_text_norefresh(s['price'],
                     top=STOCK_BAR_Y + STOCK_PRICE_Y,
                     left=slot_left + STOCK_PADDING,
                     right=slot_right + STOCK_PADDING,
                     size=11, bold=True)
 
-            fb.ui_text(f"{arrow}{s['pct']}%",
+            fb.ui_text_norefresh(f"{arrow}{s['pct']}%",
                     top=STOCK_BAR_Y + STOCK_CHANGE_Y,
                     left=slot_left + STOCK_PADDING,
                     right=slot_right + STOCK_PADDING,
@@ -167,20 +168,20 @@ class HomeScreen:
             y           = HEADLINES_Y + (i * HEADLINE_ITEM_H)
 
             # source label
-            fb.ui_text(h.get("source", ""),
+            fb.ui_text_norefresh(h.get("source", ""),
                     top=y + 8, left=WIDGET_PADDING,
                     right=10, size=10)
 
             # title
             title = fb.truncate(h.get("title", ""), CHARS_SIZE_13)
-            fb.ui_text(title,
+            fb.ui_text_norefresh(title,
                     top=y + 28, left=WIDGET_PADDING,
                     right=10, size=13)
 
             # summary — only if there's room
             summary = h.get("summary", "")
             if summary:
-                fb.ui_text(fb.truncate(summary, 72),
+                fb.ui_text_norefresh(fb.truncate(summary, 72),
                         top=y + 58, left=WIDGET_PADDING,
                         right=10, size=10)
 

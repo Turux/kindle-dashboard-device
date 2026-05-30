@@ -33,13 +33,15 @@ def clear_norefresh():
     """Fill screen white without triggering e-ink refresh"""
     _run(["-b", "-k", "-B", "WHITE"])
 
-def cls_region(top, left, width, height, flash=False):
+def cls_region(top, left, width, height, flash=False, norefresh=False):
     """Clear a region to white"""
     args = ["-k",
             f"top={top},left={left},width={width},height={height}",
             "-B", "WHITE"]
     if flash:
         args += ["-f"]
+    if norefresh:
+        args = ["-b"] + args
     _run(args)
 
 def refresh_region(top, left, width, height):
@@ -82,13 +84,16 @@ def read_text(string, top, left=10, right=10, size=16,
     _run(args)
 
 def ui_text_norefresh(string, top, left=10, right=10, size=12,
-                      bold=False):
+                      bold=False, centered=False):
     """Helvetica — draw without triggering e-ink refresh"""
     style    = "BOLD" if bold else "REGULAR"
     font_str = (f"regular={FONT_UI_REGULAR},bold={FONT_UI_BOLD},"
                 f"size={size},top={top},left={left},"
                 f"right={right},style={style}")
-    args = ["-b", "-t", font_str, "--", string]
+    args = ["-b", "-t", font_str]
+    if centered:
+        args += ["-m"]
+    args += ["--", string]
     _run(args)
 
 def read_text_norefresh(string, top, left=10, right=10, size=12):
@@ -130,6 +135,13 @@ def hline_norefresh(y, x_start=0, x_end=600, thickness=1):
 def vline(x, y_start=0, y_end=800):
     """1px vertical rule"""
     _run(["-k",
+          f"top={y_start},left={x},"
+          f"width=1,height={y_end - y_start}",
+          "-B", "BLACK"])
+
+def vline_norefresh(x, y_start=0, y_end=800):
+    """1px vertical rule without triggering e-ink refresh"""
+    _run(["-b", "-k",
           f"top={y_start},left={x},"
           f"width=1,height={y_end - y_start}",
           "-B", "BLACK"])
