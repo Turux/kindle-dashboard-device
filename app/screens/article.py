@@ -17,9 +17,10 @@ class ArticleScreen:
     def __init__(self, state):
         self.state = state
         self.full_render_needed = True
-        self._pages  = []
-        self._source = ""
-        self._title  = ""
+        self._pages   = []
+        self._source  = ""
+        self._title   = ""
+        self._summary = ""
 
     # ── main render ───────────────────────────────
 
@@ -38,17 +39,20 @@ class ArticleScreen:
     # ── preparation ───────────────────────────────
 
     def _prepare(self):
-        h            = self.state.article or {}
-        self._title  = h.get("title", "")
-        self._source = h.get("source", "")
+        h             = self.state.article or {}
+        self._title   = h.get("title", "")
+        self._source  = h.get("source", "")
+        self._summary = h.get("summary", "")
 
         url_hash = h.get("url_hash", "")
         text     = load_article(url_hash) if url_hash else None
 
         if not text:
-            text = h.get("summary", "")
+            text = self._summary
+            self._summary = ""  # summary IS the body — don't show it twice
         if not text:
             text = "Article not available offline.\n\nPress Menu on the home screen to sync."
+            self._summary = ""
 
         self._pages = self._paginate(text)
 
@@ -69,10 +73,12 @@ class ArticleScreen:
         while lines and lines[-1] == "":
             lines.pop()
 
-        title_lines = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
-        title_px    = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
-        page_1_cap  = SCREEN_H - ARTICLE_MARGIN_TOP - title_px
-        other_cap   = SCREEN_H - ARTICLE_MARGIN_TOP
+        title_lines   = len(textwrap.wrap(self._title, width=ARTICLE_TITLE_CHARS))
+        title_px      = (title_lines * ARTICLE_TITLE_LINE_H) + ARTICLE_TITLE_GAP
+        summary_lines = len(textwrap.wrap(self._summary, width=ARTICLE_CHARS_PER_LINE)) if self._summary else 0
+        summary_px    = (summary_lines * ARTICLE_LINE_HEIGHT + ARTICLE_TITLE_GAP) if summary_lines else 0
+        page_1_cap    = SCREEN_H - ARTICLE_MARGIN_TOP - title_px - summary_px
+        other_cap     = SCREEN_H - ARTICLE_MARGIN_TOP
 
         pages  = []
         i      = 0
@@ -141,6 +147,14 @@ class ArticleScreen:
                      size=ARTICLE_TITLE_SIZE, bold=True)
                 y += ARTICLE_TITLE_LINE_H
             y += ARTICLE_TITLE_GAP
+            if self._summary:
+                for line in textwrap.wrap(self._summary, width=ARTICLE_CHARS_PER_LINE):
+                    fb.ui_text_norefresh(line, top=y,
+                         left=ARTICLE_MARGIN_LEFT,
+                         right=ARTICLE_MARGIN_RIGHT,
+                         size=ARTICLE_BODY_SIZE)
+                    y += ARTICLE_LINE_HEIGHT
+                y += ARTICLE_TITLE_GAP
         else:
             y = ARTICLE_MARGIN_TOP
 
