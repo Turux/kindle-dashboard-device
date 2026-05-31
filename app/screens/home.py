@@ -11,7 +11,7 @@ from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
 from datetime import datetime
 from app.config import WEATHER_CITY
-from app.display.layout import (ICON_LOCK, ICON_WIFI,
+from app.display.layout import (ICON_LOCK, ICON_WIFI, ICON_WIFI_SLASH, ICON_SYNC,
                                  ICON_STOCK_UP, ICON_STOCK_DOWN,
                                  ICON_BATT_FULL, ICON_BATT_3Q,
                                  ICON_BATT_HALF, ICON_BATT_1Q, ICON_BATT_EMPTY)
@@ -227,17 +227,18 @@ class HomeScreen:
 
         elif key == KEY_MENU:
             if is_wifi_on():
-                # show syncing message in top right
-                fb.cls_region(top=0, left=480, width=120, height=60)
-                fb.ui_text("Syncing...", top=18, left=480, right=10, size=10)
+                fb.cls_region(top=0, left=0, width=80, height=60)
+                fb.symbol_norefresh(ICON_SYNC, top=20, left=10, right=540, size=10)
+                fb.refresh_screen()
                 synced = sync_if_online()
                 if synced:
                     self.state.data = load_home()
                 self.full_render_needed = True
             else:
-                # flash a "No WiFi" message briefly then restore
-                fb.cls_region(top=0, left=460, width=140, height=60)
-                fb.ui_text("No WiFi", top=18, left=460, right=10, size=10)
+                fb.cls_region(top=0, left=0, width=140, height=60)
+                fb.symbol_norefresh(ICON_WIFI_SLASH, top=20, left=10, right=450, size=10)
+                fb.ui_text_norefresh("No WiFi", top=17, left=38, right=10, size=10)
+                fb.refresh_screen()
                 import time
                 time.sleep(2)
                 self.full_render_needed = True
