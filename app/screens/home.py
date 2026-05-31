@@ -11,7 +11,7 @@ from app.state import SCREEN_SOURCE, SCREEN_ARTICLE, SCREEN_HOME
 from app.data.cache import sync_if_online, load_home, is_wifi_on
 from datetime import datetime
 from app.config import WEATHER_CITY
-from app.display.layout import (ICON_LOCK, ICON_WIFI, ICON_WIFI_SLASH, ICON_SYNC,
+from app.display.layout import (ICON_LOCK, ICON_WIFI, ICON_WIFI_SLASH, ICON_SYNC, ICON_PLANE,
                                  ICON_STOCK_UP, ICON_STOCK_DOWN,
                                  ICON_BATT_FULL, ICON_BATT_3Q,
                                  ICON_BATT_HALF, ICON_BATT_1Q, ICON_BATT_EMPTY)
@@ -79,7 +79,9 @@ class HomeScreen:
             x = 470
             if is_wifi_on():
                 fb.symbol_norefresh(ICON_WIFI, top=20, left=x, right=5, size=8)
-                x += 30
+            else:
+                fb.symbol_norefresh(ICON_PLANE, top=20, left=x, right=5, size=8)
+            x += 30
             batt = get_battery()
             if batt is not None:
                 icon = (ICON_BATT_FULL  if batt >= 75 else

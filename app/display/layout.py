@@ -40,6 +40,7 @@ ICON_LOCK       = ""  # fa-lock
 ICON_WIFI       = ""  # fa-wifi
 ICON_SYNC       = ""  # fa-arrows-rotate U+F021
 ICON_WIFI_SLASH = ""  # fa-ban           U+F05E
+ICON_PLANE      = ""  # fa-plane          U+F072
 ICON_STOCK_UP   = ""  # fa-arrow-up
 ICON_STOCK_DOWN = ""  # fa-arrow-down
 ICON_BATT_FULL  = ""  # fa-battery-full
