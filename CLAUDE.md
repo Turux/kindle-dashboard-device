@@ -109,11 +109,12 @@ Current open issues (as of May 2026):
 - **#4 WiFi toggle** — add on/off toggle via app. Use ownership state machine (save state before enabling, only disable if app enabled it). See issue comment for full design.
 - **#5 Git on Kindle** — pre-compiled ARMv7 static binary for easier deployment
 - **#18 Squircle widget borders** — rounded rectangle borders via PNG overlay + FBInk `-i` flag. Back burner.
+- **#19 Sync message overwrites status bar** — sync notification clobbers status bar display.
+- **#20 Pull quotes render as plain text** — publishers style pull quotes visually on web; trafilatura flattens them to plain paragraphs, indistinguishable from body text. Fix likely requires per-source HTML preprocessing or trafilatura XML output mode. Low priority.
 
 Not yet filed:
 - **Boot automation** — auto-launch via KUAL autostart
 - **America's Cup / Ocean Race widgets** — future addition, needs layout redesign for extra columns
-- **The Dial bug** — articles repeat title/date in body; pull-quote sentences duplicated. Needs server-side fix in article fetcher.
 
 ## Recently fixed
 - **Symbol icons** — Font Awesome 7 Free Solid for lock, WiFi, 5-level battery, stock up/down arrows
