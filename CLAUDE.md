@@ -69,8 +69,8 @@ Constants defined in `layout.py`, rendered via `fb.symbol_norefresh()` in `fbink
 | ICON_WIFI | wifi | U+F1EB |
 | ICON_WIFI_SLASH | ban (no-wifi indicator) | U+F05E |
 | ICON_SYNC | arrows-rotate (syncing indicator) | U+F021 |
-| ICON_STOCK_UP | arrow-up | U+F062 |
-| ICON_STOCK_DOWN | arrow-down | U+F063 |
+| ICON_STOCK_UP | caret-up | U+F0D8 |
+| ICON_STOCK_DOWN | caret-down | U+F0D7 |
 | ICON_BATT_FULL | battery-full | U+F240 |
 | ICON_BATT_3Q | battery-three-quarters | U+F241 |
 | ICON_BATT_HALF | battery-half | U+F242 |
