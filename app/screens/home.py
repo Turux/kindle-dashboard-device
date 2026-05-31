@@ -67,7 +67,7 @@ class HomeScreen:
     
 
     def _draw_date_bar(self):
-        from app.data.cache import get_battery, get_wifi_state
+        from app.data.cache import get_battery, is_wifi_on
         now      = datetime.now()
         date_str = now.strftime("%A  %d %B %Y")
         fb.ui_text_norefresh(date_str, top=15, left=10, right=10,
@@ -77,7 +77,7 @@ class HomeScreen:
             fb.symbol_norefresh(ICON_LOCK, top=18, left=492, right=5, size=11)
         else:
             x = 470
-            if get_wifi_state():
+            if is_wifi_on():
                 fb.symbol_norefresh(ICON_WIFI, top=20, left=x, right=5, size=8)
                 x += 30
             batt = get_battery()
